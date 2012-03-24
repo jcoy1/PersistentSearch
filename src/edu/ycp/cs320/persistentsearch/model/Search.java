@@ -1,10 +1,14 @@
 package edu.ycp.cs320.persistentsearch.model;
 
-/**
- * A Search.
- * @author okendal1
- *
- */
+import java.util.ArrayList;
+
 public class Search {
-	// TODO: add fields and methods
+	SearchTerm criteria = new SearchTerm();
+	ArrayList<Website> sitesToVisit = new ArrayList<Website>();
+	ResultCollection results = new ResultCollection();
+	
+	public Search()
+	{
+		
+	}
 }
