@@ -1,14 +1,16 @@
 package edu.ycp.cs320.persistentsearch.model;
 
 import java.util.ArrayList;
+import java.util.Observable;
 
-public class ResultCollection {
-	ArrayList<URL> storedResults = new ArrayList<URL>();
-	ArrayList<URL> newResults = new ArrayList<URL>();
+public class ResultCollection extends Observable {
+	ArrayList<URL> storedResults;
+	ArrayList<URL> newResults;
 	
 	public ResultCollection()
 	{
-		
+		storedResults = new ArrayList<URL>();
+		newResults = new ArrayList<URL>();
 	}
 	
 	public ArrayList<URL> getNewResults()

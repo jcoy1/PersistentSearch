@@ -1,14 +1,22 @@
 package edu.ycp.cs320.persistentsearch.model;
 
 import java.util.ArrayList;
+import java.util.Observable;
 
-public class Search {
-	SearchTerm criteria = new SearchTerm();
-	ArrayList<Website> sitesToVisit = new ArrayList<Website>();
-	ResultCollection results = new ResultCollection();
+public class Search extends Observable {
+	SearchTerm criteria;
+	ArrayList<Website> sitesToVisit;
+	ResultCollection results;
 	
-	public Search()
+	public Search(String terms)
 	{
-		
+		criteria = new SearchTerm(terms);
+		sitesToVisit = new ArrayList<Website>();
+		results = new ResultCollection();
+	}
+	
+	public void addWebsite(Website w)
+	{
+		sitesToVisit.add(w);
 	}
 }
