@@ -19,4 +19,32 @@ public class Search extends Observable {
 	{
 		sitesToVisit.add(w);
 	}
+	
+	public void performSearch()
+	{
+		for(int i = 0; i < sitesToVisit.size(); i++)
+		{
+			results = sitesToVisit.get(i).performSearch(criteria, results);
+		}
+	}
+	
+	public void setCriteria(String terms)
+	{
+		criteria.setTerms(terms);
+	}
+	
+	public String getCriteria()
+	{
+		return criteria.getTerms();
+	}
+	
+	public ArrayList<Website> getSites()
+	{
+		return sitesToVisit;
+	}
+	
+	public ResultCollection getResults()
+	{
+		return results;
+	}
 }

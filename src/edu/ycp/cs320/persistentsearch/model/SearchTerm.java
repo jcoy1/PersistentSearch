@@ -7,5 +7,15 @@ public class SearchTerm {
 	{
 		terms = s;
 	}
+	
+	public void setTerms(String s)
+	{
+		terms = s;
+	}
+	
+	public String getTerms()
+	{
+		return terms;
+	}
 
 }

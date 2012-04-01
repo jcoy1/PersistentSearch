@@ -28,6 +28,6 @@ public class User extends Observable {
 	
 	public void deleteSearch(Search s)
 	{
-		
+		profile.remove(s);
 	}
 }
