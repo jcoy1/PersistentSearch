@@ -13,6 +13,8 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JCheckBox;
 import javax.swing.JButton;
+
+import java.awt.Dimension;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
@@ -107,7 +109,7 @@ public class EditSearchView extends JPanel implements Observer {
 		cancelButton.setBounds(230, 189, 89, 23);
 		add(cancelButton);
 		
-		
+		setPreferredSize(new Dimension(371, 244));
 	}
 
 	protected void handleSave()

@@ -6,6 +6,7 @@ import java.util.Observer;
 import javax.swing.JPanel;
 import javax.swing.JButton;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
@@ -16,8 +17,7 @@ public class defaultUserView extends JPanel implements Observer {
 	
 	private User model;
 	private JButton addNewSearchButton;
-	private JButton editSearchButton;
-	private JButton viewResultsButton;
+	private JButton listOfSearchButton;
 	
 	public defaultUserView() {
 		setLayout(null);
@@ -30,31 +30,22 @@ public class defaultUserView extends JPanel implements Observer {
 				handleNewSearch();
 			}
 		});
-		addNewSearchButton.setBounds(43, 114, 111, 23);
+		addNewSearchButton.setBounds(32, 131, 134, 23);
 		addNewSearchButton.setAlignmentY(Component.BOTTOM_ALIGNMENT);
 		add(addNewSearchButton);
 		
-		editSearchButton = new JButton("Edit Search");
-		editSearchButton.addActionListener(new ActionListener() 
+		listOfSearchButton = new JButton("List of Searches");
+		listOfSearchButton.addActionListener(new ActionListener() 
 		{
 			public void actionPerformed(ActionEvent e) 
 			{
-				handleEditSearch();
+				handleListOfSearches();
 			}
 		});
-		editSearchButton.setBounds(279, 114, 111, 23);
-		add(editSearchButton);
+		listOfSearchButton.setBounds(230, 131, 141, 23);
+		add(listOfSearchButton);
 		
-		viewResultsButton = new JButton("View Results");
-		viewResultsButton.addActionListener(new ActionListener() 
-		{
-			public void actionPerformed(ActionEvent e) 
-			{
-				handleViewResults();
-			}
-		});
-		viewResultsButton.setBounds(164, 175, 111, 23);
-		add(viewResultsButton);
+		setPreferredSize(new Dimension(425, 293));
 	}
 	
 	public void setModel(User model) 
@@ -68,16 +59,12 @@ public class defaultUserView extends JPanel implements Observer {
 	protected void handleNewSearch()
 	{
 		model.addNewSearch();
+		userApp.getInstance().switchView(userApp.NEW_SEARCH_VIEW_NAME);
 	}
 	
-	protected void handleEditSearch()
+	protected void handleListOfSearches()
 	{
-		
-	}
-	
-	protected void handleViewResults()
-	{
-		
+		userApp.getInstance().switchView(userApp.LIST_OF_SEARCHES_NAME);
 	}
 
 	@Override
