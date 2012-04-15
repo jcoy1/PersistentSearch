@@ -9,6 +9,9 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JLabel;
+import java.awt.Font;
+import java.awt.Color;
 
 
 public class defaultUserView extends JPanel implements Observer {
@@ -20,9 +23,12 @@ public class defaultUserView extends JPanel implements Observer {
 	private JButton listOfSearchButton;
 	
 	public defaultUserView() {
+		setBackground(Color.BLUE);
+		setForeground(Color.BLACK);
 		setLayout(null);
 		
 		addNewSearchButton = new JButton("Add New Search");
+		addNewSearchButton.setForeground(Color.BLUE);
 		addNewSearchButton.addActionListener(new ActionListener() 
 		{
 			public void actionPerformed(ActionEvent e) 
@@ -30,11 +36,12 @@ public class defaultUserView extends JPanel implements Observer {
 				handleNewSearch();
 			}
 		});
-		addNewSearchButton.setBounds(32, 131, 134, 23);
+		addNewSearchButton.setBounds(224, 266, 134, 23);
 		addNewSearchButton.setAlignmentY(Component.BOTTOM_ALIGNMENT);
 		add(addNewSearchButton);
 		
 		listOfSearchButton = new JButton("List of Searches");
+		listOfSearchButton.setForeground(Color.BLUE);
 		listOfSearchButton.addActionListener(new ActionListener() 
 		{
 			public void actionPerformed(ActionEvent e) 
@@ -42,10 +49,29 @@ public class defaultUserView extends JPanel implements Observer {
 				handleListOfSearches();
 			}
 		});
-		listOfSearchButton.setBounds(230, 131, 141, 23);
+		listOfSearchButton.setBounds(368, 266, 141, 23);
 		add(listOfSearchButton);
 		
-		setPreferredSize(new Dimension(425, 293));
+		setPreferredSize(new Dimension(519, 300));
+		
+		JLabel lblPersistentSearch = new JLabel("PERSISTENT SEARCH");
+		lblPersistentSearch.setForeground(Color.RED);
+		lblPersistentSearch.setFont(new Font("Impact", Font.ITALIC, 60));
+		lblPersistentSearch.setBounds(10, 11, 499, 108);
+		add(lblPersistentSearch);
+		
+		JLabel lblPresentedBy = new JLabel("Presented By:");
+		lblPresentedBy.setForeground(Color.WHITE);
+		lblPresentedBy.setFont(new Font("Impact", Font.PLAIN, 24));
+		lblPresentedBy.setBounds(185, 130, 150, 34);
+		add(lblPresentedBy);
+		
+		JLabel lblCoyKendall = new JLabel("Kendall & Coy");
+		lblCoyKendall.setForeground(Color.RED);
+		lblCoyKendall.setBackground(Color.BLUE);
+		lblCoyKendall.setFont(new Font("Impact", Font.ITALIC, 60));
+		lblCoyKendall.setBounds(87, 171, 352, 84);
+		add(lblCoyKendall);
 	}
 	
 	public void setModel(User model) 
@@ -58,7 +84,6 @@ public class defaultUserView extends JPanel implements Observer {
 	
 	protected void handleNewSearch()
 	{
-		model.addNewSearch();
 		userApp.getInstance().switchView(userApp.NEW_SEARCH_VIEW_NAME);
 	}
 	
@@ -72,5 +97,4 @@ public class defaultUserView extends JPanel implements Observer {
 		// TODO Auto-generated method stub
 		
 	}
-
 }

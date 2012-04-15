@@ -28,7 +28,7 @@ public class ResultCollectionView extends JPanel implements Observer {
 		model = new ResultCollection();
 		
 		resultList = new JList<String>();
-		resultList.setBounds(10, 42, 430, 213);
+		resultList.setBounds(10, 42, 499, 213);
 		add(resultList);
 		
 		nameTextBox = new JTextField();
@@ -45,10 +45,10 @@ public class ResultCollectionView extends JPanel implements Observer {
 			}
 		});
 		
-		defaultButton.setBounds(324, 266, 116, 23);
+		defaultButton.setBounds(368, 266, 141, 23);
 		add(defaultButton);
 		
-		setPreferredSize(new Dimension(462, 302));
+		setPreferredSize(new Dimension(519, 300));
 	}
 	
 	public void setModel(ResultCollection model) 
@@ -69,5 +69,11 @@ public class ResultCollectionView extends JPanel implements Observer {
 	{
 		// TODO Auto-generated method stub
 		
+		/*
+		for(String s : model.getResults())
+		{
+			resultList.add(s);
+		}
+		*/
 	}
 }

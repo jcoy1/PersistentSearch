@@ -16,14 +16,14 @@ public class User extends Observable {
 		return profile;
 	}
 	
-	public void addNewSearch()
+	public void addNewSearch(SearchTerm term)
 	{
-		
+		profile.add(new Search(term.getTerms()));
 	}
 	
-	public void editSearch(Search s)
+	public void editSearch(Search s, SearchTerm st)
 	{
-		
+		s.setCriteria(st.getTerms());
 	}
 	
 	public void deleteSearch(Search s)

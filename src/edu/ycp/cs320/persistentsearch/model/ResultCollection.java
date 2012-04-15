@@ -4,36 +4,19 @@ import java.util.ArrayList;
 import java.util.Observable;
 
 public class ResultCollection extends Observable {
-	ArrayList<URL> storedResults;
-	ArrayList<URL> newResults;
+	ArrayList<String> results;
 	
 	public ResultCollection()
 	{
-		storedResults = new ArrayList<URL>();
-		newResults = new ArrayList<URL>();
+		results = new ArrayList<String>();
 	}
 	
-	public ArrayList<URL> getNewResults()
+	public ArrayList<String> getResults()
 	{
-		return newResults;
+		return results;
 	}
 	
-	public ArrayList<URL> getStoredResults()
-	{
-		return storedResults;
-	}
-	
-	public void addNewResult(URL url)
-	{
-		
-	}
-	
-	public void changeAllNewResultsToStored()
-	{
-		
-	}
-	
-	public void changeStoredResultsToNew()
+	public void addNewResult(String s)
 	{
 		
 	}

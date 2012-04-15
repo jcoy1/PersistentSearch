@@ -3,9 +3,9 @@ package edu.ycp.cs320.persistentsearch.gui;
 import java.util.Observable;
 import java.util.Observer;
 
+import edu.ycp.cs320.persistentsearch.model.Bing;
 import edu.ycp.cs320.persistentsearch.model.Bloomberg;
 import edu.ycp.cs320.persistentsearch.model.ESPN;
-import edu.ycp.cs320.persistentsearch.model.Google;
 import edu.ycp.cs320.persistentsearch.model.NewYorkTimes;
 import edu.ycp.cs320.persistentsearch.model.Search;
 
@@ -14,6 +14,8 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JCheckBox;
 import javax.swing.JButton;
+
+import java.awt.Dimension;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
@@ -24,13 +26,13 @@ public class NewSearchView extends JPanel implements Observer {
 	private Search model;
 	private JButton saveButton;
 	private JButton cancelButton;
-	private JCheckBox googleCheckBox;
+	private JCheckBox bingCheckBox;
 	private JCheckBox espnCheckBox;
 	private JCheckBox newYorkTimesCheckBox;
 	private JCheckBox bloombergCheckBox;
 	private JTextField termsTextBox;
 	
-	private Google google;
+	private Bing bing;
 	private ESPN espn;
 	private NewYorkTimes newYorkTimes;
 	private Bloomberg bloomberg;
@@ -40,33 +42,33 @@ public class NewSearchView extends JPanel implements Observer {
 		setLayout(null);
 		
 		JLabel termsLabel = new JLabel("Search Terms:");
-		termsLabel.setBounds(72, 32, 72, 14);
+		termsLabel.setBounds(152, 58, 72, 14);
 		add(termsLabel);
 		
 		termsTextBox = new JTextField();
-		termsTextBox.setBounds(154, 29, 122, 20);
+		termsTextBox.setBounds(234, 55, 122, 20);
 		add(termsTextBox);
 		termsTextBox.setColumns(10);
 		
-		googleCheckBox = new JCheckBox("Google");
-		googleCheckBox.setSelected(true);
-		googleCheckBox.setBounds(179, 65, 97, 23);
-		add(googleCheckBox);
+		bingCheckBox = new JCheckBox("Bing");
+		bingCheckBox.setSelected(true);
+		bingCheckBox.setBounds(259, 91, 97, 23);
+		add(bingCheckBox);
 		
 		espnCheckBox = new JCheckBox("ESPN");
-		espnCheckBox.setBounds(179, 91, 97, 23);
+		espnCheckBox.setBounds(259, 117, 97, 23);
 		add(espnCheckBox);
 		
 		newYorkTimesCheckBox = new JCheckBox("New York Times");
-		newYorkTimesCheckBox.setBounds(179, 117, 109, 23);
+		newYorkTimesCheckBox.setBounds(259, 143, 109, 23);
 		add(newYorkTimesCheckBox);
 		
 		bloombergCheckBox = new JCheckBox("Bloomberg");
-		bloombergCheckBox.setBounds(179, 143, 97, 23);
+		bloombergCheckBox.setBounds(259, 169, 97, 23);
 		add(bloombergCheckBox);
 		
 		JLabel lblWebsitesToSearch = new JLabel("Websites to Search:");
-		lblWebsitesToSearch.setBounds(72, 69, 97, 14);
+		lblWebsitesToSearch.setBounds(152, 95, 97, 14);
 		add(lblWebsitesToSearch);
 		
 		cancelButton = new JButton("Cancel");
@@ -77,7 +79,7 @@ public class NewSearchView extends JPanel implements Observer {
 				handleCancel();
 			}
 		});
-		cancelButton.setBounds(250, 203, 89, 23);
+		cancelButton.setBounds(420, 266, 89, 23);
 		add(cancelButton);
 		
 		saveButton = new JButton("Save");
@@ -88,17 +90,19 @@ public class NewSearchView extends JPanel implements Observer {
 				handleSave();
 			}
 		});
-		saveButton.setBounds(151, 203, 89, 23);
+		saveButton.setBounds(321, 266, 89, 23);
 		add(saveButton);
+		
+		setPreferredSize(new Dimension(519, 300));
 	}
 	
 	protected void handleSave()
 	{
-		model = new Search(termsTextBox.getSelectedText());
+		model = new Search(termsTextBox.getText());
 		
-		if(googleCheckBox.equals(true))
+		if(bingCheckBox.equals(true))
 		{
-			model.addWebsite(google);
+			model.addWebsite(bing);
 		}
 		if(espnCheckBox.equals(true))
 		{
@@ -112,11 +116,13 @@ public class NewSearchView extends JPanel implements Observer {
 		{
 			model.addWebsite(bloomberg);
 		}
+		
+		userApp.getInstance().switchView(userApp.RESULT_COLLECTION_NAME);
 	}
 	
 	protected void handleCancel()
 	{
-		
+		userApp.getInstance().switchView(userApp.DEFAULT_VIEW_NAME);
 	}
 	
 	public void setModel(Search model) 

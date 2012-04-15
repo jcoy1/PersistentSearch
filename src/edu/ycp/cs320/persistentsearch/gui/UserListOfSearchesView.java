@@ -7,10 +7,9 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JButton;
 
-import edu.ycp.cs320.persistentsearch.model.User;
+import edu.ycp.cs320.persistentsearch.model.*;
 
 import java.awt.Dimension;
-import java.awt.List;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
@@ -18,11 +17,12 @@ public class UserListOfSearchesView extends JPanel implements Observer {
 	
 	private static final long serialVersionUID = 1L;
 	
-	private JList<String> searchesList;
+	private JList<Search> searchesList;
 	private JButton viewResultsButton;
 	private JButton editSearchButton;
 	private JButton defaultViewButton;
 	private User model;
+	private JButton btnDeleteSearch;
 	
 	public UserListOfSearchesView() {
 		setLayout(null);
@@ -30,12 +30,13 @@ public class UserListOfSearchesView extends JPanel implements Observer {
 		model = new User();
 		
 		JLabel lblNewLabel = new JLabel("List of Searches");
-		lblNewLabel.setBounds(10, 11, 86, 14);
+		lblNewLabel.setBounds(10, 11, 108, 14);
 		add(lblNewLabel);
 		
-		searchesList = new JList<String>();
-		searchesList.setBounds(10, 36, 430, 213);
+		searchesList = new JList<Search>();
+		searchesList.setBounds(10, 36, 499, 213);
 		add(searchesList);
+		
 		
 		defaultViewButton = new JButton("Default View");
 		defaultViewButton.addActionListener(new ActionListener() 
@@ -46,7 +47,7 @@ public class UserListOfSearchesView extends JPanel implements Observer {
 			}
 		});
 		
-		defaultViewButton.setBounds(338, 266, 102, 23);
+		defaultViewButton.setBounds(379, 266, 130, 23);
 		add(defaultViewButton);
 		
 		editSearchButton = new JButton("Edit Search");
@@ -57,7 +58,7 @@ public class UserListOfSearchesView extends JPanel implements Observer {
 				handleEditSearch();
 			}
 		});
-		editSearchButton.setBounds(239, 266, 89, 23);
+		editSearchButton.setBounds(128, 266, 108, 23);
 		add(editSearchButton);
 		
 		viewResultsButton = new JButton("View Results");
@@ -68,10 +69,21 @@ public class UserListOfSearchesView extends JPanel implements Observer {
 				handleViewResults();
 			}
 		});
-		viewResultsButton.setBounds(127, 266, 102, 23);
+		viewResultsButton.setBounds(10, 266, 108, 23);
 		add(viewResultsButton);
 		
-		setPreferredSize(new Dimension(451, 300));
+		btnDeleteSearch = new JButton("Delete Search");
+		btnDeleteSearch.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent arg0) 
+			{
+				handleDeleteSearch();
+			}
+		});
+		btnDeleteSearch.setBounds(246, 266, 123, 23);
+		add(btnDeleteSearch);
+		
+		setPreferredSize(new Dimension(519, 300));
 	}
 	
 	public void setModel(User model) 
@@ -97,11 +109,22 @@ public class UserListOfSearchesView extends JPanel implements Observer {
 	{
 		userApp.getInstance().switchView(userApp.RESULT_COLLECTION_NAME);
 	}
+	
+	public void handleDeleteSearch()
+	{
+		searchesList.remove(searchesList.getSelectedIndex());
+		model.deleteSearch(searchesList.getSelectedValue());
+	}
 
 	@Override
 	public void update(Observable arg0, Object arg1) {
 		// TODO Auto-generated method stub
 		
+		/*
+		for(Search s : model.getProfile())
+		{
+			searchesList.add(s);
+		}
+		*/
 	}
-
 }

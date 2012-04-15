@@ -4,9 +4,9 @@ import java.util.Observable;
 import java.util.Observer;
 import javax.swing.JPanel;
 
+import edu.ycp.cs320.persistentsearch.model.Bing;
 import edu.ycp.cs320.persistentsearch.model.Bloomberg;
 import edu.ycp.cs320.persistentsearch.model.ESPN;
-import edu.ycp.cs320.persistentsearch.model.Google;
 import edu.ycp.cs320.persistentsearch.model.NewYorkTimes;
 import edu.ycp.cs320.persistentsearch.model.Search;
 import javax.swing.JLabel;
@@ -22,7 +22,7 @@ public class EditSearchView extends JPanel implements Observer {
 	
 	private static final long serialVersionUID = 1L;
 	private JTextField termsTextBox;
-	private JCheckBox googleCheckBox;
+	private JCheckBox bingCheckBox;
 	private JCheckBox espnCheckBox;
 	private JCheckBox newYorkTimesCheckBox;
 	private JCheckBox bloombergCheckBox;
@@ -30,7 +30,7 @@ public class EditSearchView extends JPanel implements Observer {
 	private JButton cancelButton;
 	private Search model;
 	
-	private Google google;
+	private Bing bing;
 	private ESPN espn;
 	private NewYorkTimes newYorkTimes;
 	private Bloomberg bloomberg;
@@ -42,29 +42,29 @@ public class EditSearchView extends JPanel implements Observer {
 		model = s;
 		
 		JLabel termsLabel = new JLabel("Search Terms:");
-		termsLabel.setBounds(43, 14, 72, 14);
+		termsLabel.setBounds(167, 58, 72, 14);
 		add(termsLabel);
 		
 		termsTextBox = new JTextField();
 		termsTextBox.setColumns(10);
-		termsTextBox.setBounds(125, 11, 122, 20);
+		termsTextBox.setBounds(249, 55, 122, 20);
 		add(termsTextBox);
 		termsTextBox.setText(model.getCriteria());
 		
 		JLabel websitesLabel = new JLabel("Websites to Search:");
-		websitesLabel.setBounds(43, 51, 97, 14);
+		websitesLabel.setBounds(167, 95, 97, 14);
 		add(websitesLabel);
 		
-		googleCheckBox = new JCheckBox("Google");
-		googleCheckBox.setBounds(150, 47, 97, 23);
-		add(googleCheckBox);
-		if(model.getSites().contains(google))
+		bingCheckBox = new JCheckBox("Bing");
+		bingCheckBox.setBounds(274, 91, 97, 23);
+		add(bingCheckBox);
+		if(model.getSites().contains(bing))
 		{
-			googleCheckBox.setSelected(true);
+			bingCheckBox.setSelected(true);
 		}
 		
 		espnCheckBox = new JCheckBox("ESPN");
-		espnCheckBox.setBounds(150, 73, 97, 23);
+		espnCheckBox.setBounds(274, 117, 97, 23);
 		add(espnCheckBox);
 		if(model.getSites().contains(espn))
 		{
@@ -72,7 +72,7 @@ public class EditSearchView extends JPanel implements Observer {
 		}
 		
 		newYorkTimesCheckBox = new JCheckBox("New York Times");
-		newYorkTimesCheckBox.setBounds(150, 99, 109, 23);
+		newYorkTimesCheckBox.setBounds(274, 143, 109, 23);
 		add(newYorkTimesCheckBox);
 		if(model.getSites().contains(newYorkTimes))
 		{
@@ -80,7 +80,7 @@ public class EditSearchView extends JPanel implements Observer {
 		}
 		
 		bloombergCheckBox = new JCheckBox("Bloomberg");
-		bloombergCheckBox.setBounds(150, 125, 97, 23);
+		bloombergCheckBox.setBounds(274, 169, 97, 23);
 		add(bloombergCheckBox);
 		if(model.getSites().contains(bloomberg))
 		{
@@ -95,7 +95,7 @@ public class EditSearchView extends JPanel implements Observer {
 				handleSave();
 			}
 		});
-		saveButton.setBounds(131, 189, 89, 23);
+		saveButton.setBounds(321, 266, 89, 23);
 		add(saveButton);
 		
 		cancelButton = new JButton("Cancel");
@@ -106,25 +106,25 @@ public class EditSearchView extends JPanel implements Observer {
 				handleCancel();
 			}
 		});
-		cancelButton.setBounds(230, 189, 89, 23);
+		cancelButton.setBounds(420, 266, 89, 23);
 		add(cancelButton);
 		
-		setPreferredSize(new Dimension(371, 244));
+		setPreferredSize(new Dimension(519, 300));
 	}
 
 	protected void handleSave()
 	{
-		model.setCriteria(termsTextBox.getSelectedText());
+		model.setCriteria(termsTextBox.getText());
 		
-		if(googleCheckBox.equals(true))
+		if(bingCheckBox.equals(true))
 		{
-			model.addWebsite(google);
+			model.addWebsite(bing);
 		}
 		else
 		{
-			if(model.getSites().contains(google))
+			if(model.getSites().contains(bing))
 			{
-				model.getSites().remove(google);
+				model.getSites().remove(bing);
 			}
 		}
 		if(espnCheckBox.equals(true))
@@ -160,11 +160,13 @@ public class EditSearchView extends JPanel implements Observer {
 				model.getSites().remove(bloomberg);
 			}
 		}
+		
+		userApp.getInstance().switchView(userApp.RESULT_COLLECTION_NAME);
 	}
 	
 	protected void handleCancel()
 	{
-		
+		userApp.getInstance().switchView(userApp.LIST_OF_SEARCHES_NAME);
 	}
 	
 	public void setModel(Search model) 
