@@ -24,7 +24,11 @@ public class Search extends Observable {
 	{
 		for(int i = 0; i < sitesToVisit.size(); i++)
 		{
-			results = sitesToVisit.get(i).performSearch(criteria, results);
+			try {
+				results = sitesToVisit.get(i).performSearch(criteria, results);
+			} catch (SearchException e) {
+				System.out.print("Exception from searching the website:" + sitesToVisit.get(i));
+			}
 		}
 	}
 	
