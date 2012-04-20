@@ -17,5 +17,22 @@ public class SearchTerm {
 	{
 		return terms;
 	}
+	
+	public String formatTerms()
+	{
+		String formatedTerms = terms;
+		formatedTerms = terms.replaceAll(" ", "+");
+		return formatedTerms;
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null || obj.getClass() != this.getClass()) 
+		{
+			return false;
+		}
+		SearchTerm other = (SearchTerm) obj;
+		return this.terms.equals(other.terms);
+	}
 
 }

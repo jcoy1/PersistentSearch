@@ -37,9 +37,9 @@ public class Search extends Observable {
 		criteria.setTerms(terms);
 	}
 	
-	public String getCriteria()
+	public SearchTerm getCriteria()
 	{
-		return criteria.getTerms();
+		return criteria;
 	}
 	
 	public ArrayList<Website> getSites()
@@ -50,5 +50,17 @@ public class Search extends Observable {
 	public ResultCollection getResults()
 	{
 		return results;
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null || obj.getClass() != this.getClass()) 
+		{
+			return false;
+		}
+		Search other = (Search) obj;
+		
+		return this.criteria.equals(other.criteria)
+				&& this.sitesToVisit.equals(other.sitesToVisit);
 	}
 }

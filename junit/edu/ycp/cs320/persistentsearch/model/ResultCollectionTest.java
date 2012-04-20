@@ -11,7 +11,7 @@ public class ResultCollectionTest {
 	private String giants;
 	
 	@Before
-	protected void setUp()
+	public void setUp()
 	{
 		rc = new ResultCollection();
 		mets = "Mets.com";

@@ -9,6 +9,8 @@ import edu.ycp.cs320.persistentsearch.model.Bloomberg;
 import edu.ycp.cs320.persistentsearch.model.ESPN;
 import edu.ycp.cs320.persistentsearch.model.NewYorkTimes;
 import edu.ycp.cs320.persistentsearch.model.Search;
+import edu.ycp.cs320.persistentsearch.model.SearchException;
+
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JCheckBox;
@@ -49,7 +51,7 @@ public class EditSearchView extends JPanel implements Observer {
 		termsTextBox.setColumns(10);
 		termsTextBox.setBounds(249, 55, 122, 20);
 		add(termsTextBox);
-		termsTextBox.setText(model.getCriteria());
+		termsTextBox.setText(model.getCriteria().getTerms());
 		
 		JLabel websitesLabel = new JLabel("Websites to Search:");
 		websitesLabel.setBounds(167, 95, 97, 14);
@@ -92,7 +94,11 @@ public class EditSearchView extends JPanel implements Observer {
 		{
 			public void actionPerformed(ActionEvent e) 
 			{
-				handleSave();
+				try {
+					handleSave();
+				} catch (SearchException e1) {
+					e1.printStackTrace();
+				}
 			}
 		});
 		saveButton.setBounds(321, 266, 89, 23);
@@ -112,54 +118,31 @@ public class EditSearchView extends JPanel implements Observer {
 		setPreferredSize(new Dimension(519, 300));
 	}
 
-	protected void handleSave()
+	protected void handleSave() throws SearchException
 	{
 		model.setCriteria(termsTextBox.getText());
 		
-		if(bingCheckBox.equals(true))
+		model.getSites().removeAll(model.getSites());
+		
+		if(bingCheckBox.isEnabled())
 		{
 			model.addWebsite(bing);
 		}
-		else
-		{
-			if(model.getSites().contains(bing))
-			{
-				model.getSites().remove(bing);
-			}
-		}
-		if(espnCheckBox.equals(true))
+		if(espnCheckBox.isEnabled())
 		{
 			model.addWebsite(espn);
 		}
-		else
-		{
-			if(model.getSites().contains(espn))
-			{
-				model.getSites().remove(espn);
-			}
-		}
-		if(newYorkTimesCheckBox.equals(true))
+		if(newYorkTimesCheckBox.isEnabled())
 		{
 			model.addWebsite(newYorkTimes);
 		}
-		else
-		{
-			if(model.getSites().contains(newYorkTimes))
-			{
-				model.getSites().remove(newYorkTimes);
-			}
-		}
-		if(bloombergCheckBox.equals(true))
+		if(bloombergCheckBox.isEnabled())
 		{
 			model.addWebsite(bloomberg);
 		}
-		else
-		{
-			if(model.getSites().contains(bloomberg))
-			{
-				model.getSites().remove(bloomberg);
-			}
-		}
+		
+		if(model.getSites().size() > 0)
+			model.getSites().get(0).performSearch(model.getCriteria(), model.getResults());
 		
 		userApp.getInstance().switchView(userApp.RESULT_COLLECTION_NAME);
 	}

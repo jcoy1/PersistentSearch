@@ -8,6 +8,7 @@ import edu.ycp.cs320.persistentsearch.model.Bloomberg;
 import edu.ycp.cs320.persistentsearch.model.ESPN;
 import edu.ycp.cs320.persistentsearch.model.NewYorkTimes;
 import edu.ycp.cs320.persistentsearch.model.Search;
+import edu.ycp.cs320.persistentsearch.model.SearchException;
 
 import javax.swing.JPanel;
 import javax.swing.JLabel;
@@ -39,6 +40,11 @@ public class NewSearchView extends JPanel implements Observer {
 
 	public NewSearchView() 
 	{
+		bing = new Bing();
+		espn = new ESPN();
+		newYorkTimes = new NewYorkTimes();
+		bloomberg = new Bloomberg();
+		
 		setLayout(null);
 		
 		JLabel termsLabel = new JLabel("Search Terms:");
@@ -87,7 +93,11 @@ public class NewSearchView extends JPanel implements Observer {
 		{
 			public void actionPerformed(ActionEvent arg0) 
 			{
-				handleSave();
+				try {
+					handleSave();
+				} catch (SearchException e) {
+					e.printStackTrace();
+				}
 			}
 		});
 		saveButton.setBounds(321, 266, 89, 23);
@@ -96,26 +106,32 @@ public class NewSearchView extends JPanel implements Observer {
 		setPreferredSize(new Dimension(519, 300));
 	}
 	
-	protected void handleSave()
+	protected void handleSave() throws SearchException
 	{
 		model = new Search(termsTextBox.getText());
 		
-		if(bingCheckBox.equals(true))
+		if(bingCheckBox.isEnabled())
 		{
 			model.addWebsite(bing);
 		}
-		if(espnCheckBox.equals(true))
+		if(espnCheckBox.isEnabled())
 		{
 			model.addWebsite(espn);
 		}
-		if(newYorkTimesCheckBox.equals(true))
+		if(newYorkTimesCheckBox.isEnabled())
 		{
 			model.addWebsite(newYorkTimes);
 		}
-		if(bloombergCheckBox.equals(true))
+		if(bloombergCheckBox.isEnabled())
 		{
 			model.addWebsite(bloomberg);
 		}
+		
+		if(model.getSites().size() > 0)
+			model.getSites().get(0).performSearch(model.getCriteria(), model.getResults());
+		
+		for(int i = 0; i < model.getResults().getResults().size(); i++)
+			System.out.println(model.getResults().getResults().get(i));
 		
 		userApp.getInstance().switchView(userApp.RESULT_COLLECTION_NAME);
 	}

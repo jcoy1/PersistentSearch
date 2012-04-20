@@ -8,12 +8,14 @@ import org.junit.Test;
 public class SearchTermTest {
 	SearchTerm term;
 	SearchTerm term2;
+	SearchTerm term3;
 	
 	@Before
-	protected void setUp()
+	public void setUp()
 	{
 		term = new SearchTerm("Nationals");
 		term2 = new SearchTerm("Giants");
+		term3 = new SearchTerm("New York Giants");
 	}
 	
 	@Test
@@ -30,5 +32,12 @@ public class SearchTermTest {
 		term2.setTerms("Ravens");
 		assertEquals("Mets", term.getTerms());
 		assertEquals("Ravens", term2.getTerms());
+	}
+	
+	@Test
+	public void testFormatTerms() throws Exception
+	{
+		assertEquals("New York Giants", term3.getTerms());
+		assertEquals("New+York+Giants", term3.formatTerms());
 	}
 }

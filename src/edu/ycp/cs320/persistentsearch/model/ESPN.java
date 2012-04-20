@@ -7,5 +7,15 @@ public class ESPN implements Website {
 	{
 		return null;
 	}
+	
+	@Override
+	public boolean equals(Object obj)
+	{
+		if (obj == null || obj.getClass() != this.getClass()) 
+		{
+			return false;
+		}
+		return true;
+	}
 
 }

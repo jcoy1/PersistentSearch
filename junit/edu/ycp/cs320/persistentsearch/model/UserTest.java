@@ -10,7 +10,7 @@ public class UserTest{
 	private SearchTerm st;
 	
 	@Before
-	protected void setUp()
+	public void setUp()
 	{
 		user = new User();
 		search = new Search("Giants");
@@ -21,8 +21,10 @@ public class UserTest{
 	public void testAddNewSearch() throws Exception
 	{
 		assertEquals(0, user.getProfile().size());
-		user.addNewSearch(st);
+		user.addNewSearch(search.getCriteria());
 		assertEquals(1, user.getProfile().size());
+		
+		assertTrue(user.getProfile().contains(search));
 	}
 	
 	@Test
@@ -30,12 +32,18 @@ public class UserTest{
 	{
 		user.editSearch(search, st);
 		
-		assertEquals("Mets", search.getCriteria());
+		assertEquals("Mets", search.getCriteria().getTerms());
 	}
 	
 	@Test
 	public void testDeleteSearch() throws Exception
 	{
+		user.addNewSearch(search.getCriteria());
+		assertEquals(1, user.getProfile().size());
+		user.addNewSearch(st);
+		assertEquals(2, user.getProfile().size());
+		
+		user.deleteSearch(search);
 		assertEquals(1, user.getProfile().size());
 	}
 }

@@ -1,9 +1,7 @@
 package edu.ycp.cs320.persistentsearch.model;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 
@@ -23,7 +21,8 @@ public class Bing implements Website {
 	@Override
 	public ResultCollection performSearch(SearchTerm sT, ResultCollection resultsToUpdate) throws SearchException 
 	{
-		String bingURL = "http://api.bing.net/xml.aspx?Appid=" + BING_API_KEY + "&query=" + sT.getTerms() + "&sources=web";
+		String formatedTerms = sT.formatTerms();
+		String bingURL = "http://api.bing.net/xml.aspx?Appid=" + BING_API_KEY + "&query=" + formatedTerms + "&sources=web";
 		
 		try {
 			URL url = new URL(bingURL);
@@ -63,16 +62,26 @@ public class Bing implements Website {
 		} catch (IOException e) {
 			throw new SearchException("IO exception performing search", e);
 		} catch (ParserConfigurationException e) {
-			e.printStackTrace();
+			throw new SearchException("Parser Configuration exception performing search", e);
 		} catch (SAXException e) {
-			e.printStackTrace();
+			throw new SearchException("SAX exception performing search", e);
 		}
 		
 		return resultsToUpdate;
 	}
 	
+	@Override
+	public boolean equals(Object obj)
+	{
+		if (obj == null || obj.getClass() != this.getClass()) 
+		{
+			return false;
+		}
+		return true;
+	}
+	
 	public static void main(String[] args) {
-		String terms = "giants";
+		String terms = "New+York+Giants";
 		String bingURL = "http://api.bing.net/xml.aspx?Appid=" + BING_API_KEY + "&query=" + terms + "&sources=web";
 		
 		try {
@@ -102,15 +111,6 @@ public class Bing implements Website {
 					}
 				}
 				
-				/*
-				while (true) {
-					String line = reader.readLine();
-					if (line == null) {
-						break;
-					}
-					System.out.println(line);
-				}
-				*/
 			} finally {
 				in.close();
 			}

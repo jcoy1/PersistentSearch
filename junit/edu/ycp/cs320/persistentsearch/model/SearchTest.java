@@ -7,15 +7,19 @@ import org.junit.Before;
 public class SearchTest {
 	
 	private Search search;
+	private SearchTerm st;
 	private Bing bing;
 	private ESPN espn;
+	private ResultCollection rc;
 	
 	@Before
-	protected void setUp()
+	public void setUp()
 	{
 		search = new Search("Giants");
+		st = new SearchTerm("Mets");
 		bing = new Bing();
 		espn = new ESPN();
+		rc = new ResultCollection();
 	}
 	
 	@Test
@@ -23,25 +27,29 @@ public class SearchTest {
 	{
 		search.addWebsite(bing);
 		assertTrue(search.getSites().contains(bing));
+		assertEquals(1, search.getSites().size());
 	}
 	
 	@Test
 	public void testPerformSearch() throws Exception
 	{
-		
+		assertEquals(0, rc.getResults().size());
+		rc = search.getSites().get(0).performSearch(new SearchTerm("giants"), rc);
+		assertFalse(rc.getResults().size() == 0);
 	}
 	
 	@Test
 	public void testGetCriteria() throws Exception
 	{
-		search.setCriteria("Mets");
-		assertEquals("Mets", search.getCriteria());
+		search.setCriteria(st.getTerms());
+		assertEquals(st.getTerms(), search.getCriteria().getTerms());
 	}
 	
 	@Test
 	public void testGetSites() throws Exception
 	{
 		search.addWebsite(espn);
+		search.addWebsite(bing);
 		assertTrue(search.getSites().contains(bing));
 		assertTrue(search.getSites().contains(espn));
 	}

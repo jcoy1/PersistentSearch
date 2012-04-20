@@ -18,6 +18,6 @@ public class ResultCollection extends Observable {
 	
 	public void addNewResult(String s)
 	{
-		
+		results.add(s);
 	}
 }
