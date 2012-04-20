@@ -40,4 +40,10 @@ public class SearchTermTest {
 		assertEquals("New York Giants", term3.getTerms());
 		assertEquals("New+York+Giants", term3.formatTerms());
 	}
+	
+	@Test
+	public void testEquals() throws Exception
+	{
+		assertTrue(term.equals(term));
+	}
 }

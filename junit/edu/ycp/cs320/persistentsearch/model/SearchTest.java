@@ -61,5 +61,11 @@ public class SearchTest {
 		assertEquals(1, search.getResults().getResults().size());
 		assertTrue(search.getResults().getResults().contains("espn.com"));
 	}
+	
+	@Test
+	public void testEquals() throws Exception
+	{
+		assertTrue(search.equals(search));
+	}
 
 }
