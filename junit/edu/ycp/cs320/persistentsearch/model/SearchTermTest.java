@@ -45,5 +45,7 @@ public class SearchTermTest {
 	public void testEquals() throws Exception
 	{
 		assertTrue(term.equals(term));
+		term2.setTerms("Nationals");
+		assertTrue(term.equals(term2));
 	}
 }

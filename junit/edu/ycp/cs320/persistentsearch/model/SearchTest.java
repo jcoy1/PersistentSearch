@@ -11,6 +11,7 @@ public class SearchTest {
 	private Bing bing;
 	private ESPN espn;
 	private ResultCollection rc;
+	private Search other;
 	
 	@Before
 	public void setUp()
@@ -20,6 +21,8 @@ public class SearchTest {
 		bing = new Bing();
 		espn = new ESPN();
 		rc = new ResultCollection();
+		other = new Search("Giants");
+		
 	}
 	
 	@Test
@@ -34,6 +37,7 @@ public class SearchTest {
 	public void testPerformSearch() throws Exception
 	{
 		assertEquals(0, rc.getResults().size());
+		search.addWebsite(bing);
 		rc = search.getSites().get(0).performSearch(new SearchTerm("giants"), rc);
 		assertFalse(rc.getResults().size() == 0);
 	}
@@ -66,6 +70,9 @@ public class SearchTest {
 	public void testEquals() throws Exception
 	{
 		assertTrue(search.equals(search));
+		search.addWebsite(bing);
+		other.addWebsite(bing);
+		assertTrue(search.equals(other));
 	}
 
 }
