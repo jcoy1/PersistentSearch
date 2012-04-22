@@ -44,7 +44,7 @@ public class EditSearchView extends JPanel implements Observer {
 		model = s;
 		
 		JLabel termsLabel = new JLabel("Search Terms:");
-		termsLabel.setBounds(167, 58, 72, 14);
+		termsLabel.setBounds(142, 58, 97, 14);
 		add(termsLabel);
 		
 		termsTextBox = new JTextField();
@@ -54,7 +54,7 @@ public class EditSearchView extends JPanel implements Observer {
 		termsTextBox.setText(model.getCriteria().getTerms());
 		
 		JLabel websitesLabel = new JLabel("Websites to Search:");
-		websitesLabel.setBounds(167, 95, 97, 14);
+		websitesLabel.setBounds(142, 95, 122, 14);
 		add(websitesLabel);
 		
 		bingCheckBox = new JCheckBox("Bing");

@@ -48,7 +48,7 @@ public class NewSearchView extends JPanel implements Observer {
 		setLayout(null);
 		
 		JLabel termsLabel = new JLabel("Search Terms:");
-		termsLabel.setBounds(152, 58, 72, 14);
+		termsLabel.setBounds(121, 58, 103, 14);
 		add(termsLabel);
 		
 		termsTextBox = new JTextField();
@@ -74,7 +74,7 @@ public class NewSearchView extends JPanel implements Observer {
 		add(bloombergCheckBox);
 		
 		JLabel lblWebsitesToSearch = new JLabel("Websites to Search:");
-		lblWebsitesToSearch.setBounds(152, 95, 97, 14);
+		lblWebsitesToSearch.setBounds(121, 95, 128, 14);
 		add(lblWebsitesToSearch);
 		
 		cancelButton = new JButton("Cancel");
