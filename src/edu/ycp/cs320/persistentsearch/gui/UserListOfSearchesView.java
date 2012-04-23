@@ -2,10 +2,13 @@ package edu.ycp.cs320.persistentsearch.gui;
 
 import java.util.Observable;
 import java.util.Observer;
+
+import javax.swing.DefaultListModel;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JButton;
+import javax.swing.ListModel;
 
 import edu.ycp.cs320.persistentsearch.model.*;
 
@@ -17,6 +20,7 @@ public class UserListOfSearchesView extends JPanel implements Observer {
 	
 	private static final long serialVersionUID = 1L;
 	
+	private DefaultListModel<Search> searchesListModel;
 	private JList<Search> searchesList;
 	private JButton viewResultsButton;
 	private JButton editSearchButton;
@@ -27,13 +31,14 @@ public class UserListOfSearchesView extends JPanel implements Observer {
 	public UserListOfSearchesView() {
 		setLayout(null);
 		
-		model = new User();
+		model = userApp.userModel;
 		
 		JLabel lblNewLabel = new JLabel("List of Searches");
 		lblNewLabel.setBounds(10, 11, 108, 14);
 		add(lblNewLabel);
 		
-		searchesList = new JList<Search>();
+		searchesListModel = new DefaultListModel<Search>();
+		searchesList = new JList<Search>(searchesListModel);
 		searchesList.setBounds(10, 36, 499, 213);
 		add(searchesList);
 		
@@ -112,19 +117,16 @@ public class UserListOfSearchesView extends JPanel implements Observer {
 	
 	public void handleDeleteSearch()
 	{
-		model.deleteSearch(searchesList.getSelectedValue());
+		userApp.userModel.deleteSearch(searchesList.getSelectedValue());
 		searchesList.remove(searchesList.getSelectedIndex());
 	}
 
 	@Override
 	public void update(Observable arg0, Object arg1) {
 		// TODO Auto-generated method stub
-		
-		/*
-		for(Search s : model.getProfile())
+		for(Search s : userApp.userModel.getProfile())
 		{
-			searchesList.add(s);
+			searchesListModel.addElement(s);
 		}
-		*/
 	}
 }

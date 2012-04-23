@@ -131,7 +131,11 @@ public class NewSearchView extends JPanel implements Observer {
 			model.getSites().get(0).performSearch(model.getCriteria(), model.getResults());
 		
 		for(int i = 0; i < model.getResults().getResults().size(); i++)
+		{
 			System.out.println(model.getResults().getResults().get(i));
+		}
+		
+		userApp.userModel.getProfile().add(model);
 		
 		userApp.getInstance().switchView(userApp.RESULT_COLLECTION_NAME);
 	}

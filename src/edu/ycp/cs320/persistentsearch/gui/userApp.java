@@ -20,12 +20,14 @@ public class userApp extends JFrame {
 	public static final String RESULT_COLLECTION_NAME = "result collection";
 	public static final String EDIT_SEARCH_VIEW_NAME = "edit search";
 	
+	//global user model object
+	public static User userModel = new User();
+	
 	private JPanel panel;
 	private CardLayout cardLayout;
 	
 	public userApp() {
 		// create the model object
-		User userModel = new User();
 		
 		// creates all the views and sets them in the view
 		defaultUserView defaultView = new defaultUserView();
