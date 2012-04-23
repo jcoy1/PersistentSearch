@@ -142,6 +142,7 @@ public class NewSearchView extends JPanel implements Observer {
 	
 	protected void handleCancel()
 	{
+		termsTextBox.setText("");
 		userApp.getInstance().switchView(userApp.DEFAULT_VIEW_NAME);
 	}
 	

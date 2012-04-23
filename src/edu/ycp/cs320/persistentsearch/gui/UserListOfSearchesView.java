@@ -8,8 +8,6 @@ import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JButton;
-import javax.swing.ListModel;
-
 import edu.ycp.cs320.persistentsearch.model.*;
 
 import java.awt.Dimension;
@@ -31,7 +29,7 @@ public class UserListOfSearchesView extends JPanel implements Observer {
 	public UserListOfSearchesView() {
 		setLayout(null);
 		
-		model = userApp.userModel;
+		model = new User();
 		
 		JLabel lblNewLabel = new JLabel("List of Searches");
 		lblNewLabel.setBounds(10, 11, 108, 14);
@@ -117,14 +115,14 @@ public class UserListOfSearchesView extends JPanel implements Observer {
 	
 	public void handleDeleteSearch()
 	{
-		userApp.userModel.deleteSearch(searchesList.getSelectedValue());
+		model.deleteSearch(searchesList.getSelectedValue());
 		searchesList.remove(searchesList.getSelectedIndex());
 	}
 
 	@Override
 	public void update(Observable arg0, Object arg1) {
 		// TODO Auto-generated method stub
-		for(Search s : userApp.userModel.getProfile())
+		for(Search s : model.getProfile())
 		{
 			searchesListModel.addElement(s);
 		}
