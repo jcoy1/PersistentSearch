@@ -63,4 +63,11 @@ public class Search extends Observable {
 		return this.criteria.equals(other.criteria)
 				&& this.sitesToVisit.equals(other.sitesToVisit);
 	}
+	
+	// TODO: toString() method
+	@Override
+	public String toString()
+	{
+		return criteria.getTerms();
+	}
 }

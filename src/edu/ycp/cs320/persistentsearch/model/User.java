@@ -16,9 +16,11 @@ public class User extends Observable {
 		return profile;
 	}
 	
-	public void addNewSearch(SearchTerm term)
+	public void addNewSearch(Search search)
 	{
-		profile.add(new Search(term.getTerms()));
+		profile.add(search);
+		setChanged();
+		notifyObservers();
 	}
 	
 	public void editSearch(Search s, SearchTerm st)

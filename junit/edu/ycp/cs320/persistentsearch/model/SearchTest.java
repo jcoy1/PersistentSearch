@@ -74,5 +74,13 @@ public class SearchTest {
 		other.addWebsite(bing);
 		assertTrue(search.equals(other));
 	}
+	
+	@Test
+	public void testToString() throws Exception
+	{
+		assertTrue(search.toString().equals("Giants"));
+		other.setCriteria("Mets");
+		assertTrue(other.toString().equals("Mets"));
+	}
 
 }

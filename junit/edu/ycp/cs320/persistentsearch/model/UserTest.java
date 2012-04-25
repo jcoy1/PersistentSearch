@@ -7,6 +7,7 @@ import org.junit.Before;
 public class UserTest{
 	private User user;
 	private Search search;
+	private Search search2;
 	private SearchTerm st;
 	
 	@Before
@@ -14,6 +15,7 @@ public class UserTest{
 	{
 		user = new User();
 		search = new Search("Giants");
+		search2 = new Search("Mets");
 		st = new SearchTerm("Mets");
 	}
 	
@@ -21,7 +23,7 @@ public class UserTest{
 	public void testAddNewSearch() throws Exception
 	{
 		assertEquals(0, user.getProfile().size());
-		user.addNewSearch(search.getCriteria());
+		user.addNewSearch(search);
 		assertEquals(1, user.getProfile().size());
 		
 		assertTrue(user.getProfile().contains(search));
@@ -38,9 +40,9 @@ public class UserTest{
 	@Test
 	public void testDeleteSearch() throws Exception
 	{
-		user.addNewSearch(search.getCriteria());
+		user.addNewSearch(search);
 		assertEquals(1, user.getProfile().size());
-		user.addNewSearch(st);
+		user.addNewSearch(search2);
 		assertEquals(2, user.getProfile().size());
 		
 		user.deleteSearch(search);

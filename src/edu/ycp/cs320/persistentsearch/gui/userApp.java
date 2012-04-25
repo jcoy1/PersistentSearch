@@ -20,11 +20,12 @@ public class userApp extends JFrame {
 	public static final String RESULT_COLLECTION_NAME = "result collection";
 	public static final String EDIT_SEARCH_VIEW_NAME = "edit search";
 	
-	// create the model object
-	public static User userModel = new User();
 	
 	private JPanel panel;
 	private CardLayout cardLayout;
+	
+	// create the model object
+	private User userModel = new User();
 	
 	public userApp() {		
 		// creates all the views and sets them in the view
@@ -33,6 +34,12 @@ public class userApp extends JFrame {
 		
 		NewSearchView newSearchView = new NewSearchView();
 		newSearchView.setModel(new Search(""));
+		newSearchView.setNewSearchCallback(new NewSearchView.NewSearchCallback() {
+			@Override
+			public void onNewSearch(Search search) {
+				userModel.addNewSearch(search);
+			}
+		});
 		
 		EditSearchView editSearchView = new EditSearchView(new Search(" "));
 		editSearchView.setModel(new Search(""));

@@ -21,8 +21,12 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 public class NewSearchView extends JPanel implements Observer {
-	
 	private static final long serialVersionUID = 1L;
+	
+	public interface NewSearchCallback 
+	{
+		public void onNewSearch(Search search);
+	}
 	
 	private Search model;
 	private JButton saveButton;
@@ -37,6 +41,8 @@ public class NewSearchView extends JPanel implements Observer {
 	private ESPN espn;
 	private NewYorkTimes newYorkTimes;
 	private Bloomberg bloomberg;
+	
+	private NewSearchCallback newSearchCallback;
 
 	public NewSearchView() 
 	{
@@ -106,6 +112,11 @@ public class NewSearchView extends JPanel implements Observer {
 		setPreferredSize(new Dimension(519, 300));
 	}
 	
+	public void setNewSearchCallback(NewSearchCallback newSearchCallback) 
+	{
+		this.newSearchCallback = newSearchCallback;
+	}
+	
 	protected void handleSave() throws SearchException
 	{
 		model = new Search(termsTextBox.getText());
@@ -135,7 +146,12 @@ public class NewSearchView extends JPanel implements Observer {
 			System.out.println(model.getResults().getResults().get(i));
 		}
 		
-		userApp.userModel.getProfile().add(model);
+		//add the search model to the user on the callback
+		if (newSearchCallback != null) {
+			newSearchCallback.onNewSearch(model);
+		}
+		
+		termsTextBox.setText("");
 		
 		userApp.getInstance().switchView(userApp.RESULT_COLLECTION_NAME);
 	}

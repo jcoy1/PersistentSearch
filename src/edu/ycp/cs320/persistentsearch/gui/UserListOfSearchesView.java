@@ -95,6 +95,8 @@ public class UserListOfSearchesView extends JPanel implements Observer {
 		
 		//register as an observer
 		model.addObserver(this);
+		
+		update(model, null);
 	}
 
 	public void handleDefaultView()
@@ -121,7 +123,12 @@ public class UserListOfSearchesView extends JPanel implements Observer {
 
 	@Override
 	public void update(Observable arg0, Object arg1) {
-		// TODO Auto-generated method stub
+		System.out.println("update!");
+		
+		//clear list before adding new ones
+		searchesListModel.clear();
+		
+		//add all of the searches in the user
 		for(Search s : model.getProfile())
 		{
 			searchesListModel.addElement(s);
