@@ -7,6 +7,7 @@ import edu.ycp.cs320.persistentsearch.model.Bing;
 import edu.ycp.cs320.persistentsearch.model.Bloomberg;
 import edu.ycp.cs320.persistentsearch.model.ESPN;
 import edu.ycp.cs320.persistentsearch.model.NewYorkTimes;
+import edu.ycp.cs320.persistentsearch.model.ResultCollection;
 import edu.ycp.cs320.persistentsearch.model.Search;
 import edu.ycp.cs320.persistentsearch.model.SearchException;
 
@@ -28,6 +29,11 @@ public class NewSearchView extends JPanel implements Observer {
 		public void onNewSearch(Search search);
 	}
 	
+	public interface NewResultCollectionCallback
+	{
+		public void onNewResultCollection(ResultCollection resultCollection);
+	}
+	
 	private Search model;
 	private JButton saveButton;
 	private JButton cancelButton;
@@ -43,7 +49,9 @@ public class NewSearchView extends JPanel implements Observer {
 	private Bloomberg bloomberg;
 	
 	private NewSearchCallback newSearchCallback;
-
+	/*
+	private NewResultCollectionCallback newResultCollectionCallback;
+	*/
 	public NewSearchView() 
 	{
 		bing = new Bing();
@@ -117,6 +125,11 @@ public class NewSearchView extends JPanel implements Observer {
 		this.newSearchCallback = newSearchCallback;
 	}
 	
+//	public void setNewResultCollectionCallback(NewResultCollectionCallback newResultCollectionCallback)
+//	{
+//		this.newResultCollectionCallback = newResultCollectionCallback;
+//	}
+	
 	protected void handleSave() throws SearchException
 	{
 		model = new Search(termsTextBox.getText());
@@ -138,8 +151,13 @@ public class NewSearchView extends JPanel implements Observer {
 			model.addWebsite(bloomberg);
 		}
 		
-		if(model.getSites().size() > 0)
-			model.getSites().get(0).performSearch(model.getCriteria(), model.getResults());
+//		if(model.getSites().size() > 0) {
+//			ResultCollection resultCollection = model.getSites().get(0).performSearch(model.getCriteria(), model.getResults());
+//			if (newResultCollectionCallback != null)
+//			{
+//				newResultCollectionCallback.onNewResultCollection(resultCollection);
+//			}
+//		}
 		
 		for(int i = 0; i < model.getResults().getResults().size(); i++)
 		{

@@ -8,6 +8,8 @@ import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JButton;
+import javax.swing.ListSelectionModel;
+
 import edu.ycp.cs320.persistentsearch.model.*;
 
 import java.awt.Dimension;
@@ -18,6 +20,10 @@ public class UserListOfSearchesView extends JPanel implements Observer {
 	
 	private static final long serialVersionUID = 1L;
 	
+	public interface ViewResultsCallback {
+		public void onViewResults(Search search);
+	}
+	
 	private DefaultListModel<Search> searchesListModel;
 	private JList<Search> searchesList;
 	private JButton viewResultsButton;
@@ -25,6 +31,8 @@ public class UserListOfSearchesView extends JPanel implements Observer {
 	private JButton defaultViewButton;
 	private User model;
 	private JButton btnDeleteSearch;
+	
+	private ViewResultsCallback viewResultsCallback;
 	
 	public UserListOfSearchesView() {
 		setLayout(null);
@@ -38,6 +46,7 @@ public class UserListOfSearchesView extends JPanel implements Observer {
 		searchesListModel = new DefaultListModel<Search>();
 		searchesList = new JList<Search>(searchesListModel);
 		searchesList.setBounds(10, 36, 499, 213);
+		searchesList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		add(searchesList);
 		
 		
@@ -89,6 +98,11 @@ public class UserListOfSearchesView extends JPanel implements Observer {
 		setPreferredSize(new Dimension(519, 300));
 	}
 	
+	public void setViewResultsCallback(ViewResultsCallback viewResultsCallback)
+	{
+		this.viewResultsCallback = viewResultsCallback;
+	}
+	
 	public void setModel(User model) 
 	{
 		this.model = model;
@@ -112,7 +126,15 @@ public class UserListOfSearchesView extends JPanel implements Observer {
 	
 	public void handleViewResults()
 	{
-		userApp.getInstance().switchView(userApp.RESULT_COLLECTION_NAME);
+		//userApp.getInstance().switchView(userApp.RESULT_COLLECTION_NAME);
+		if (viewResultsCallback != null)
+		{
+			Search selected = searchesList.getSelectedValue();
+			if (selected != null)
+			{
+				viewResultsCallback.onViewResults(selected);
+			}				
+		}
 	}
 	
 	public void handleDeleteSearch()

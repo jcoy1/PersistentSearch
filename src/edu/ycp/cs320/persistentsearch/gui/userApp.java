@@ -8,6 +8,7 @@ import javax.swing.SwingUtilities;
 
 import edu.ycp.cs320.persistentsearch.model.ResultCollection;
 import edu.ycp.cs320.persistentsearch.model.Search;
+import edu.ycp.cs320.persistentsearch.model.SearchException;
 import edu.ycp.cs320.persistentsearch.model.User;
 
 public class userApp extends JFrame {
@@ -31,13 +32,25 @@ public class userApp extends JFrame {
 		// creates all the views and sets them in the view
 		defaultUserView defaultView = new defaultUserView();
 		defaultView.setModel(userModel);
+
+		final ResultCollection resultCollection = new ResultCollection();
 		
 		NewSearchView newSearchView = new NewSearchView();
 		newSearchView.setModel(new Search(""));
 		newSearchView.setNewSearchCallback(new NewSearchView.NewSearchCallback() {
 			@Override
-			public void onNewSearch(Search search) {
+			public void onNewSearch(Search search)
+			{
 				userModel.addNewSearch(search);
+				
+				// perform the search
+				try {
+					ResultCollection newResultCollection = search.getSites().get(0).performSearch(search.getCriteria(), search.getResults());
+					resultCollection.setName(search.getCriteria().getTerms());
+					resultCollection.replaceResults(newResultCollection);
+				} catch (SearchException e) {
+					new SearchException("Exception Performing Search", e);
+				}
 			}
 		});
 		
@@ -46,9 +59,18 @@ public class userApp extends JFrame {
 		
 		UserListOfSearchesView listOfSearchesView = new UserListOfSearchesView();
 		listOfSearchesView.setModel(userModel);
+		listOfSearchesView.setViewResultsCallback(new UserListOfSearchesView.ViewResultsCallback() {
+			@Override
+			public void onViewResults(Search search)
+			{
+				resultCollection.setName(search.getCriteria().getTerms());
+				resultCollection.replaceResults(search.getResults());
+				switchView(RESULT_COLLECTION_NAME);
+			}
+		});
 		
 		ResultCollectionView resultCollectionView = new ResultCollectionView();
-		resultCollectionView.setModel(new ResultCollection());
+		resultCollectionView.setModel(resultCollection);
 
 		// create a frame for the view, and display it
 		instance = this;
