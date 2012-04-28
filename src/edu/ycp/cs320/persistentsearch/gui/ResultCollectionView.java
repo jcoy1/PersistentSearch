@@ -24,6 +24,7 @@ public class ResultCollectionView extends JPanel implements Observer {
 	private JList<String> resultList;
 	private JTextField nameTextBox;
 	private ResultCollection model;
+	private JButton listOfSearchesButton;
 
 	public ResultCollectionView() {
 		setLayout(null);
@@ -39,7 +40,18 @@ public class ResultCollectionView extends JPanel implements Observer {
 		nameTextBox.setBounds(10, 11, 128, 20);
 		add(nameTextBox);
 		nameTextBox.setColumns(10);
+		nameTextBox.setText(model.getName());
 		
+		listOfSearchesButton = new JButton("List of Searches");
+		listOfSearchesButton.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent e) 
+			{
+				handleListOfSearches();
+			}
+		});
+		listOfSearchesButton.setBounds(230, 266, 128, 23);
+		add(listOfSearchesButton);
 		
 		defaultButton = new JButton("Default View");
 		defaultButton.addActionListener(new ActionListener() 
@@ -67,6 +79,11 @@ public class ResultCollectionView extends JPanel implements Observer {
 	public void handleDefaultView()
 	{
 		userApp.getInstance().switchView(userApp.DEFAULT_VIEW_NAME);
+	}
+	
+	public void handleListOfSearches()
+	{
+		userApp.getInstance().switchView(userApp.LIST_OF_SEARCHES_NAME);
 	}
 
 	@Override
