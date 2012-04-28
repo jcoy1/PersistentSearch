@@ -32,6 +32,7 @@ public class UserListOfSearchesView extends JPanel implements Observer {
 	private JButton btnDeleteSearch;
 	
 	private ViewResultsCallback viewResultsCallback;
+	private JButton btnAddNewSearch;
 	
 	public UserListOfSearchesView() {
 		setLayout(null);
@@ -58,7 +59,7 @@ public class UserListOfSearchesView extends JPanel implements Observer {
 			}
 		});
 		
-		defaultViewButton.setBounds(379, 266, 130, 23);
+		defaultViewButton.setBounds(394, 266, 115, 23);
 		add(defaultViewButton);
 		
 		viewResultsButton = new JButton("View Results");
@@ -69,7 +70,7 @@ public class UserListOfSearchesView extends JPanel implements Observer {
 				handleViewResults();
 			}
 		});
-		viewResultsButton.setBounds(128, 266, 108, 23);
+		viewResultsButton.setBounds(10, 266, 108, 23);
 		add(viewResultsButton);
 		
 		btnDeleteSearch = new JButton("Delete Search");
@@ -80,10 +81,21 @@ public class UserListOfSearchesView extends JPanel implements Observer {
 				handleDeleteSearch();
 			}
 		});
-		btnDeleteSearch.setBounds(246, 266, 123, 23);
+		btnDeleteSearch.setBounds(128, 266, 116, 23);
 		add(btnDeleteSearch);
 		
 		setPreferredSize(new Dimension(519, 300));
+		
+		btnAddNewSearch = new JButton("Add New Search");
+		btnAddNewSearch.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent e) 
+			{
+				handleNewSearch();
+			}
+		});
+		btnAddNewSearch.setBounds(254, 266, 130, 23);
+		add(btnAddNewSearch);
 	}
 	
 	public void setViewResultsCallback(ViewResultsCallback viewResultsCallback)
@@ -99,6 +111,11 @@ public class UserListOfSearchesView extends JPanel implements Observer {
 		model.addObserver(this);
 		
 		update(model, null);
+	}
+	
+	public void handleNewSearch()
+	{
+		userApp.getInstance().switchView(userApp.NEW_SEARCH_VIEW_NAME);
 	}
 
 	public void handleDefaultView()
