@@ -140,7 +140,7 @@ public class UserListOfSearchesView extends JPanel implements Observer {
 	public void handleDeleteSearch()
 	{
 		model.deleteSearch(searchesList.getSelectedValue());
-		searchesList.remove(searchesList.getSelectedIndex());
+		searchesListModel.remove(searchesList.getSelectedIndex());
 	}
 
 	@Override
