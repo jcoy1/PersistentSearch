@@ -27,7 +27,6 @@ public class UserListOfSearchesView extends JPanel implements Observer {
 	private DefaultListModel<Search> searchesListModel;
 	private JList<Search> searchesList;
 	private JButton viewResultsButton;
-	private JButton editSearchButton;
 	private JButton defaultViewButton;
 	private User model;
 	private JButton btnDeleteSearch;
@@ -62,17 +61,6 @@ public class UserListOfSearchesView extends JPanel implements Observer {
 		defaultViewButton.setBounds(379, 266, 130, 23);
 		add(defaultViewButton);
 		
-		editSearchButton = new JButton("Edit Search");
-		editSearchButton.addActionListener(new ActionListener() 
-		{
-			public void actionPerformed(ActionEvent e) 
-			{
-				handleEditSearch();
-			}
-		});
-		editSearchButton.setBounds(128, 266, 108, 23);
-		add(editSearchButton);
-		
 		viewResultsButton = new JButton("View Results");
 		viewResultsButton.addActionListener(new ActionListener() 
 		{
@@ -81,7 +69,7 @@ public class UserListOfSearchesView extends JPanel implements Observer {
 				handleViewResults();
 			}
 		});
-		viewResultsButton.setBounds(10, 266, 108, 23);
+		viewResultsButton.setBounds(128, 266, 108, 23);
 		add(viewResultsButton);
 		
 		btnDeleteSearch = new JButton("Delete Search");
@@ -116,12 +104,6 @@ public class UserListOfSearchesView extends JPanel implements Observer {
 	public void handleDefaultView()
 	{
 		userApp.getInstance().switchView(userApp.DEFAULT_VIEW_NAME);
-	}
-	
-	public void handleEditSearch()
-	{
-		//searchesList.getSelectedValuesList();
-		userApp.getInstance().switchView(userApp.EDIT_SEARCH_VIEW_NAME);
 	}
 	
 	public void handleViewResults()

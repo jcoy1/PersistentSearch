@@ -19,7 +19,6 @@ public class userApp extends JFrame {
 	public static final String NEW_SEARCH_VIEW_NAME = "new search";
 	public static final String LIST_OF_SEARCHES_NAME = "list of searches";
 	public static final String RESULT_COLLECTION_NAME = "result collection";
-	public static final String EDIT_SEARCH_VIEW_NAME = "edit search";
 	
 	
 	private JPanel panel;
@@ -54,9 +53,6 @@ public class userApp extends JFrame {
 			}
 		});
 		
-		EditSearchView editSearchView = new EditSearchView(new Search(" "));
-		editSearchView.setModel(new Search(""));
-		
 		UserListOfSearchesView listOfSearchesView = new UserListOfSearchesView();
 		listOfSearchesView.setModel(userModel);
 		listOfSearchesView.setViewResultsCallback(new UserListOfSearchesView.ViewResultsCallback() {
@@ -82,7 +78,6 @@ public class userApp extends JFrame {
 		//adds all the view names to the panel so we can switch between them
 		panel.add(defaultView, DEFAULT_VIEW_NAME);
 		panel.add(newSearchView, NEW_SEARCH_VIEW_NAME);
-		panel.add(editSearchView, EDIT_SEARCH_VIEW_NAME);
 		panel.add(listOfSearchesView, LIST_OF_SEARCHES_NAME);
 		panel.add(resultCollectionView, RESULT_COLLECTION_NAME);
 		
