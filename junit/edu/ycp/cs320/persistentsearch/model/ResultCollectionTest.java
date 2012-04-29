@@ -9,11 +9,13 @@ public class ResultCollectionTest {
 	private ResultCollection rc;
 	private String mets;
 	private String giants;
+	private ResultCollection other;
 	
 	@Before
 	public void setUp()
 	{
 		rc = new ResultCollection();
+		other = new ResultCollection();
 		mets = "Mets.com";
 		giants = "Giants.com";
 	}
@@ -38,6 +40,28 @@ public class ResultCollectionTest {
 		assertEquals(2, rc.getResults().size());
 		assertTrue(rc.getResults().contains(mets));
 		assertTrue(rc.getResults().contains(giants));
-
+	}
+	
+	@Test
+	public void testSetName() throws Exception
+	{
+		rc.setName("mets");
+		assertEquals("mets", rc.getName());
+	}
+	
+	@Test
+	public void testGetName() throws Exception
+	{
+		rc.setName("mets");
+		assertEquals("mets", rc.getName());
+	}
+	
+	@Test
+	public void testReplaceResult() throws Exception
+	{
+		rc.addNewResult(mets);
+		other.addNewResult(giants);
+		rc.replaceResults(other);
+		assertEquals("Giants.com", rc.getResults().get(0));
 	}
 }

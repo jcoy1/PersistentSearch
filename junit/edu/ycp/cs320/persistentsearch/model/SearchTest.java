@@ -50,6 +50,13 @@ public class SearchTest {
 	}
 	
 	@Test
+	public void testSetCriteria() throws Exception
+	{
+		search.setCriteria(st.getTerms());
+		assertEquals(st.getTerms(), search.getCriteria().getTerms());
+	}
+	
+	@Test
 	public void testGetSites() throws Exception
 	{
 		search.addWebsite(espn);
