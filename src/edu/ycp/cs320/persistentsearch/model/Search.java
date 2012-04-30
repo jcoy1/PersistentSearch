@@ -1,5 +1,7 @@
 package edu.ycp.cs320.persistentsearch.model;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Observable;
 
@@ -50,6 +52,30 @@ public class Search extends Observable {
 	public ResultCollection getResults()
 	{
 		return results;
+	}
+	
+	public String getContentHash() {
+		try {
+			MessageDigest md = MessageDigest.getInstance("SHA-256");
+			
+			// feed the MessageDigest the raw bytes of the search terms and websites
+			md.digest(criteria.getTerms().getBytes());
+			
+			for (Website website : sitesToVisit) {
+				md.digest(website.getClass().getName().getBytes());
+			}
+			
+			byte[] result = md.digest();
+			
+			StringBuffer sb = new StringBuffer();
+			for (int i = 0; i < result.length; i++) {
+				sb.append(Integer.toString((result[i] & 0xff) + 0x100, 16).substring(1));
+			}
+			
+			return sb.toString();
+		} catch (NoSuchAlgorithmException e) {
+			throw new IllegalStateException();
+		}
 	}
 	
 	@Override
