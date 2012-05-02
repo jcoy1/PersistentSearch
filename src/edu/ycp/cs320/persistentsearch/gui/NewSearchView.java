@@ -151,14 +151,6 @@ public class NewSearchView extends JPanel implements Observer {
 			model.addWebsite(bloomberg);
 		}
 		
-//		if(model.getSites().size() > 0) {
-//			ResultCollection resultCollection = model.getSites().get(0).performSearch(model.getCriteria(), model.getResults());
-//			if (newResultCollectionCallback != null)
-//			{
-//				newResultCollectionCallback.onNewResultCollection(resultCollection);
-//			}
-//		}
-		
 		for(int i = 0; i < model.getResults().getResults().size(); i++)
 		{
 			System.out.println(model.getResults().getResults().get(i));
@@ -169,8 +161,9 @@ public class NewSearchView extends JPanel implements Observer {
 			newSearchCallback.onNewSearch(model);
 		}
 		
-		termsTextBox.setText("");
 		
+		
+		termsTextBox.setText("");
 		userApp.getInstance().switchView(userApp.RESULT_COLLECTION_NAME);
 	}
 	

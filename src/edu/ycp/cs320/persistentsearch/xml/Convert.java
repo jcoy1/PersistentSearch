@@ -12,6 +12,8 @@ import javax.xml.transform.stream.StreamResult;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 import edu.ycp.cs320.persistentsearch.model.Bing;
 import edu.ycp.cs320.persistentsearch.model.ESPN;
@@ -41,7 +43,8 @@ public class Convert {
 		Element criteriaElt = convertSearchTermToXML(doc, criteria);
 		root.appendChild(criteriaElt);
 		
-		for (Website website : search.getSites()) {
+		for (Website website : search.getSites()) 
+		{
 			Element websiteElt = convertWebsiteToXML(doc, website);
 			root.appendChild(websiteElt);
 		}
@@ -95,7 +98,8 @@ public class Convert {
 		nameElt.setTextContent(name);
 		root.appendChild(nameElt);
 		
-		for (String s : resultCollection.getResults()) {
+		for (String s : resultCollection.getResults()) 
+		{
 			Element resultElt = doc.createElement("result");
 			resultElt.setTextContent(s);
 			root.appendChild(resultElt);
@@ -113,7 +117,23 @@ public class Convert {
 	public static ResultCollection convertResultCollectionFromXML(Element resultCollectionElt) 
 	{
 		// TODO
-		return null;
+		ResultCollection resultCollection = new ResultCollection();
+		
+		NodeList childList = resultCollectionElt.getChildNodes();
+		for (int j = 0; j < childList.getLength(); j++) 
+		{
+			Node child = childList.item(j);
+			if(child.getNodeName().equals("name"))
+			{
+				resultCollection.setName(child.getTextContent());
+			}
+			if(child.getNodeName().equals("result"))
+			{
+				resultCollection.addNewResult(child.getTextContent());
+			}
+		}
+		
+		return resultCollection;
 	}
 	
 	public static void main(String[] args) throws Exception 
@@ -151,5 +171,14 @@ public class Convert {
 
         //print xml
         System.out.println("Here's the xml:\n\n" + xmlString);
+        
+        //test going from xml to result collection
+        ResultCollection resultCollectionFromXML = convertResultCollectionFromXML(root);
+        System.out.println("Here is the result collection: ");
+        System.out.println("The name is: " + resultCollectionFromXML.getName());
+        for(int i = 0; i < resultCollectionFromXML.getResults().size(); i++)
+        {
+        	System.out.println("Result[" + i + "] is: " + resultCollectionFromXML.getResults().get(i));
+        }
 	}
 }
