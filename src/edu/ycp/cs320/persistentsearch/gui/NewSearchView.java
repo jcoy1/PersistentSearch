@@ -10,6 +10,8 @@ import edu.ycp.cs320.persistentsearch.model.NewYorkTimes;
 import edu.ycp.cs320.persistentsearch.model.ResultCollection;
 import edu.ycp.cs320.persistentsearch.model.Search;
 import edu.ycp.cs320.persistentsearch.model.SearchException;
+import edu.ycp.cs320.persistentsearch.server.Server;
+import edu.ycp.cs320.persistentsearch.xml.Convert;
 
 import javax.swing.JPanel;
 import javax.swing.JLabel;
@@ -20,6 +22,8 @@ import javax.swing.JButton;
 import java.awt.Dimension;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.io.File;
+import java.io.IOException;
 
 public class NewSearchView extends JPanel implements Observer {
 	private static final long serialVersionUID = 1L;
@@ -49,15 +53,17 @@ public class NewSearchView extends JPanel implements Observer {
 	private Bloomberg bloomberg;
 	
 	private NewSearchCallback newSearchCallback;
-	/*
-	private NewResultCollectionCallback newResultCollectionCallback;
-	*/
+	
+	private Convert converter;
+	
 	public NewSearchView() 
 	{
 		bing = new Bing();
 		espn = new ESPN();
 		newYorkTimes = new NewYorkTimes();
 		bloomberg = new Bloomberg();
+		
+		converter = new Convert();
 		
 		setLayout(null);
 		
@@ -161,7 +167,15 @@ public class NewSearchView extends JPanel implements Observer {
 			newSearchCallback.onNewSearch(model);
 		}
 		
-		
+		//create file in search folder
+		//***** File Writer will create the file
+		File file = new File(Server.SEARCH_DIR + "/" + model.getContentHash() + ".search");
+		try {
+			file.createNewFile();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		/////////////////////////////////////////////////
 		
 		termsTextBox.setText("");
 		userApp.getInstance().switchView(userApp.RESULT_COLLECTION_NAME);

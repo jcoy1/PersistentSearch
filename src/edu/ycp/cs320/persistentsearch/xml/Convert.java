@@ -141,20 +141,21 @@ public class Convert {
 		DocumentBuilderFactory fac = DocumentBuilderFactory.newInstance();
 		DocumentBuilder builder = fac.newDocumentBuilder();
 		
-//		Search search = new Search("giants");
-//		search.addWebsite(new Bing());
-//		search.addWebsite(new ESPN());
+		Search search = new Search("giants");
+		search.addWebsite(new Bing());
+		search.addWebsite(new ESPN());
 		
-		ResultCollection resultCollection = new ResultCollection();
-		resultCollection.setName("giants");
-		resultCollection.addNewResult("giants.com");
-		resultCollection.addNewResult("espn.com");
+//		ResultCollection resultCollection = new ResultCollection();
+//		resultCollection.setName("giants");
+//		resultCollection.addNewResult("giants.com");
+//		resultCollection.addNewResult("espn.com");
 		
 		// test content hash function for search
 		//System.out.println("Search content hash is " + search.getContentHash());
 		
 		Document doc = builder.newDocument();
-		Element root = convertResultCollectionToXML(doc, resultCollection);
+		Element root = convertSearchToXML(doc, search);
+		//Element root = convertResultCollectionToXML(doc, resultCollection);
 		doc.appendChild(root);
 		
 		TransformerFactory transfac = TransformerFactory.newInstance();
@@ -172,13 +173,13 @@ public class Convert {
         //print xml
         System.out.println("Here's the xml:\n\n" + xmlString);
         
-        //test going from xml to result collection
-        ResultCollection resultCollectionFromXML = convertResultCollectionFromXML(root);
-        System.out.println("Here is the result collection: ");
-        System.out.println("The name is: " + resultCollectionFromXML.getName());
-        for(int i = 0; i < resultCollectionFromXML.getResults().size(); i++)
-        {
-        	System.out.println("Result[" + i + "] is: " + resultCollectionFromXML.getResults().get(i));
-        }
+//        //test going from xml to result collection
+//        ResultCollection resultCollectionFromXML = convertResultCollectionFromXML(root);
+//        System.out.println("Here is the result collection: ");
+//        System.out.println("The name is: " + resultCollectionFromXML.getName());
+//        for(int i = 0; i < resultCollectionFromXML.getResults().size(); i++)
+//        {
+//        	System.out.println("Result[" + i + "] is: " + resultCollectionFromXML.getResults().get(i));
+//        }
 	}
 }
