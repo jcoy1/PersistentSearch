@@ -18,12 +18,25 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JCheckBox;
 import javax.swing.JButton;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 import java.awt.Dimension;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.StringWriter;
 
 public class NewSearchView extends JPanel implements Observer {
 	private static final long serialVersionUID = 1L;
@@ -54,16 +67,12 @@ public class NewSearchView extends JPanel implements Observer {
 	
 	private NewSearchCallback newSearchCallback;
 	
-	private Convert converter;
-	
 	public NewSearchView() 
 	{
 		bing = new Bing();
 		espn = new ESPN();
 		newYorkTimes = new NewYorkTimes();
 		bloomberg = new Bloomberg();
-		
-		converter = new Convert();
 		
 		setLayout(null);
 		
@@ -117,6 +126,12 @@ public class NewSearchView extends JPanel implements Observer {
 					handleSave();
 				} catch (SearchException e) {
 					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				} catch (ParserConfigurationException e) {
+					e.printStackTrace();
+				} catch (TransformerException e) {
+					e.printStackTrace();
 				}
 			}
 		});
@@ -136,23 +151,23 @@ public class NewSearchView extends JPanel implements Observer {
 //		this.newResultCollectionCallback = newResultCollectionCallback;
 //	}
 	
-	protected void handleSave() throws SearchException
+	protected void handleSave() throws SearchException, IOException, ParserConfigurationException, TransformerException
 	{
 		model = new Search(termsTextBox.getText());
 		
-		if(bingCheckBox.isEnabled())
+		if(bingCheckBox.isSelected())
 		{
 			model.addWebsite(bing);
 		}
-		if(espnCheckBox.isEnabled())
+		if(espnCheckBox.isSelected())
 		{
 			model.addWebsite(espn);
 		}
-		if(newYorkTimesCheckBox.isEnabled())
+		if(newYorkTimesCheckBox.isSelected())
 		{
 			model.addWebsite(newYorkTimes);
 		}
-		if(bloombergCheckBox.isEnabled())
+		if(bloombergCheckBox.isSelected())
 		{
 			model.addWebsite(bloomberg);
 		}
@@ -168,13 +183,33 @@ public class NewSearchView extends JPanel implements Observer {
 		}
 		
 		//create file in search folder
+		
+		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+		Document newDoc = dBuilder.newDocument();
+		Element root = Convert.convertSearchToXML(newDoc, model);
+		newDoc.appendChild(root);
+		
+		TransformerFactory transfac = TransformerFactory.newInstance();
+        Transformer trans = transfac.newTransformer();
+        trans.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
+        trans.setOutputProperty(OutputKeys.INDENT, "yes");
+		
+		StringWriter sw = new StringWriter();
+        StreamResult result = new StreamResult(sw);
+        DOMSource source = new DOMSource(newDoc);
+        trans.transform(source, result);
+        String xmlString = sw.toString();
+        
 		//***** File Writer will create the file
-		File file = new File(Server.SEARCH_DIR + "/" + model.getContentHash() + ".search");
+		FileWriter writer = new FileWriter(Server.SEARCH_DIR + "/" + model.getContentHash() + ".search");
 		try {
-			file.createNewFile();
-		} catch (IOException e) {
-			e.printStackTrace();
+			writer.write(xmlString);
+		} finally {
+			writer.close();
 		}
+		
+		
 		/////////////////////////////////////////////////
 		
 		termsTextBox.setText("");

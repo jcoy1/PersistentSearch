@@ -1,9 +1,11 @@
 package edu.ycp.cs320.persistentsearch.xml;
 
+import java.io.FileWriter;
 import java.io.StringWriter;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
@@ -14,13 +16,18 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 import edu.ycp.cs320.persistentsearch.model.Bing;
+import edu.ycp.cs320.persistentsearch.model.Bloomberg;
 import edu.ycp.cs320.persistentsearch.model.ESPN;
+import edu.ycp.cs320.persistentsearch.model.NewYorkTimes;
 import edu.ycp.cs320.persistentsearch.model.ResultCollection;
 import edu.ycp.cs320.persistentsearch.model.Search;
+import edu.ycp.cs320.persistentsearch.model.SearchException;
 import edu.ycp.cs320.persistentsearch.model.SearchTerm;
 import edu.ycp.cs320.persistentsearch.model.Website;
+import edu.ycp.cs320.persistentsearch.server.Server;
 
 public class Convert {
 	/**
@@ -79,6 +86,41 @@ public class Convert {
 		Element criteriaElt = doc.createElement("criteria");
 		criteriaElt.setTextContent(criteria.getTerms());
 		return criteriaElt;
+	}
+	
+	public static Search convertSearchFromXML(Element searchElt)
+	{
+		Search search = new Search("");
+		
+		NodeList nList = searchElt.getChildNodes();
+		for (int i = 0; i < nList.getLength(); i++) 
+		{
+			if(nList.item(i).getNodeName().equals("criteria"))
+			{
+				search.setCriteria(nList.item(i).getTextContent());
+			}
+			else if(nList.item(i).getNodeName().equals("website"))
+			{
+				if(nList.item(i).getTextContent().contains("Bing"))
+				{
+					search.getSites().add((new Bing()));
+				}
+				if(nList.item(i).getTextContent().contains("ESPN"))
+				{
+					search.getSites().add((new ESPN()));
+				}
+				if(nList.item(i).getTextContent().contains("NewYorkTimes"))
+				{
+					search.getSites().add((new NewYorkTimes()));
+				}
+				if(nList.item(i).getTextContent().contains("Bloomberg"))
+				{
+					search.getSites().add((new Bloomberg()));
+				}
+			}
+		}
+		
+		return search;
 	}
 	
 	/**
@@ -151,7 +193,7 @@ public class Convert {
 //		resultCollection.addNewResult("espn.com");
 		
 		// test content hash function for search
-		//System.out.println("Search content hash is " + search.getContentHash());
+		System.out.println("Search content hash is " + search.getContentHash());
 		
 		Document doc = builder.newDocument();
 		Element root = convertSearchToXML(doc, search);

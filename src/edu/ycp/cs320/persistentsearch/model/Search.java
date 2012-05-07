@@ -59,10 +59,10 @@ public class Search extends Observable {
 			MessageDigest md = MessageDigest.getInstance("SHA-256");
 			
 			// feed the MessageDigest the raw bytes of the search terms and websites
-			md.digest(criteria.getTerms().getBytes());
+			md.update(criteria.getTerms().getBytes());
 			
 			for (Website website : sitesToVisit) {
-				md.digest(website.getClass().getName().getBytes());
+				md.update(website.getClass().getName().getBytes());
 			}
 			
 			byte[] result = md.digest();

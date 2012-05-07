@@ -1,44 +1,55 @@
 package edu.ycp.cs320.persistentsearch.server;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-
+import java.io.StringWriter;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 
 import org.w3c.dom.Document;
-import org.w3c.dom.Node;
+import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import edu.ycp.cs320.persistentsearch.model.*;
+import edu.ycp.cs320.persistentsearch.xml.Convert;
 
 public class Server {
 	
 	public static final String SEARCH_DIR = System.getProperty("user.home") + File.separator + "search";
 	
-	private static final int INTERVAL_MS = 60*5*1000; // wake up every 5 minutes
+	private static final int INTERVAL_MS = /*60*5*1000*/ 30*1000; // wake up every 5 minutes
 	
-	public static void main(String[] args) throws InterruptedException 
+	public static void main(String[] args) throws InterruptedException, SearchException, TransformerException 
 	{
 		while (true) {
 			try {
 				performSearches();
 			} catch (IOException e) {
-				e.printStackTrace();
+				throw new SearchException("IO exception performing search", e);
 			}
 			Thread.sleep(INTERVAL_MS);
 		}
 	}
 
-	private static void performSearches() throws IOException 
+	private static void performSearches() throws IOException, SearchException, TransformerException 
 	{
+		//print statement so we know it went into this function
+		System.out.println("Performing search by server");
+		
 		File searchDir = new File(SEARCH_DIR);
+		
+		DocumentBuilderFactory dbFactory;
+		DocumentBuilder dBuilder;
+		Document doc;
 		
 		if (!searchDir.exists() || !searchDir.isDirectory()) 
 		{
@@ -53,47 +64,48 @@ public class Server {
 				// This is a search: load it and perform the search, saving the results in a .results file
 				Search search = new Search("");
 				try {
-					DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-					DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+					dbFactory = DocumentBuilderFactory.newInstance();
+					dBuilder = dbFactory.newDocumentBuilder();
 					try {
-						Document doc = dBuilder.parse(f);
+						doc = dBuilder.parse(f);
 						
-						NodeList nList = doc.getElementsByTagName("search");
-						for (int i = 0; i < nList.getLength(); i++) 
-						{
-							if(nList.item(i).getNodeName().equals("criteria"))
-							{
-								search.setCriteria(nList.item(i).getTextContent());
-							}
-							else if(nList.item(i).getNodeName().equals("website"))
-							{
-								if(nList.item(i).getTextContent().contains("Bing"))
-								{
-									search.getSites().add((new Bing()));
-								}
-								if(nList.item(i).getTextContent().contains("ESPN"))
-								{
-									search.getSites().add((new ESPN()));
-								}
-								if(nList.item(i).getTextContent().contains("NewYorkTimes"))
-								{
-									search.getSites().add((new NewYorkTimes()));
-								}
-								if(nList.item(i).getTextContent().contains("Bloomberg"))
-								{
-									search.getSites().add((new Bloomberg()));
-								}
-							}
-						}
+						search = Convert.convertSearchFromXML(doc.getDocumentElement());
 						
 					} catch (SAXException e) {
-						e.printStackTrace();
+						throw new SearchException("SAX exception performing search", e);
 					}
 				} catch (ParserConfigurationException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					throw new SearchException("Parser Configuration exception performing search", e);
+				}
+				
+				if(!search.getCriteria().equals(null))
+				{
+					search.performSearch();
+					FileWriter writer = new FileWriter(Server.SEARCH_DIR + "/" + search.getContentHash() + ".results");
+					
+					Document newDoc = dBuilder.newDocument();
+					Element root = Convert.convertResultCollectionToXML(newDoc, search.getResults());
+					newDoc.appendChild(root);
+					
+					TransformerFactory transfac = TransformerFactory.newInstance();
+			        Transformer trans = transfac.newTransformer();
+			        trans.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
+			        trans.setOutputProperty(OutputKeys.INDENT, "yes");
+					
+					StringWriter sw = new StringWriter();
+			        StreamResult result = new StreamResult(sw);
+			        DOMSource source = new DOMSource(newDoc);
+			        trans.transform(source, result);
+			        String xmlString = sw.toString();
+					try{
+						writer.write(xmlString);
+					}finally{
+						writer.close();
+					}
 				}
 			}//ends if for a .search file
 		}//ends loop of going through files
+		
+		System.out.println("Performed search from server");
 	}
 }

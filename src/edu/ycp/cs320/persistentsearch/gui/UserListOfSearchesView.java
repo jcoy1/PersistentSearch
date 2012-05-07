@@ -9,12 +9,22 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JButton;
 import javax.swing.ListSelectionModel;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.w3c.dom.Document;
+import org.xml.sax.SAXException;
 
 import edu.ycp.cs320.persistentsearch.model.*;
+import edu.ycp.cs320.persistentsearch.server.Server;
+import edu.ycp.cs320.persistentsearch.xml.Convert;
 
 import java.awt.Dimension;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.io.File;
+import java.io.IOException;
 
 public class UserListOfSearchesView extends JPanel implements Observer {
 	
@@ -138,6 +148,21 @@ public class UserListOfSearchesView extends JPanel implements Observer {
 	
 	public void handleDeleteSearch()
 	{
+		//delete the file with the search there
+		File searchDir = new File(Server.SEARCH_DIR);
+		
+		String selectedHash = searchesList.getSelectedValue().getContentHash();
+		
+		String nameOfSearchFileToDelete = Server.SEARCH_DIR + "/" + selectedHash + ".search";
+		File searchFileToDelete = new File(nameOfSearchFileToDelete);
+		
+		String nameOfResultsFileToDelete = Server.SEARCH_DIR + "/" + selectedHash + ".results";
+		File resultFileToDelete = new File(nameOfResultsFileToDelete);
+		
+		searchFileToDelete.delete();
+		resultFileToDelete.delete();
+		
+		//delete it from the list and the user profile
 		model.deleteSearch(searchesList.getSelectedValue());
 		searchesListModel.remove(searchesList.getSelectedIndex());
 	}
@@ -146,7 +171,6 @@ public class UserListOfSearchesView extends JPanel implements Observer {
 	public void update(Observable arg0, Object arg1) {
 		System.out.println("update!");
 		
-		//clear list before adding new ones
 		searchesListModel.clear();
 		
 		//add all of the searches in the user
