@@ -149,8 +149,6 @@ public class UserListOfSearchesView extends JPanel implements Observer {
 	public void handleDeleteSearch()
 	{
 		//delete the file with the search there
-		File searchDir = new File(Server.SEARCH_DIR);
-		
 		String selectedHash = searchesList.getSelectedValue().getContentHash();
 		
 		String nameOfSearchFileToDelete = Server.SEARCH_DIR + "/" + selectedHash + ".search";
