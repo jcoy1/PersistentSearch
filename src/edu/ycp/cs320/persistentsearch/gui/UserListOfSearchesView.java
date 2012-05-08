@@ -158,8 +158,6 @@ public class UserListOfSearchesView extends JPanel implements Observer {
 
 	@Override
 	public void update(Observable arg0, Object arg1) {
-		System.out.println("update!");
-		
 		searchesListModel.clear();
 		
 		//add all of the searches in the user

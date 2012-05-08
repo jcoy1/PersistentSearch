@@ -31,6 +31,7 @@ public class Server {
 	{
 		while (true) {
 			try {
+				System.out.println("Performing a New Search");
 				performSearches();
 			} catch (IOException e) {
 				throw new SearchException("IO exception performing search", e);
@@ -101,7 +102,5 @@ public class Server {
 				}
 			}//ends if for a .search file
 		}//ends loop of going through files
-		
-		System.out.println("Performed search from server");
 	}
 }
