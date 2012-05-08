@@ -23,11 +23,6 @@ public class User extends Observable {
 		notifyObservers();
 	}
 	
-	public void editSearch(Search s, SearchTerm st)
-	{
-		s.setCriteria(st.getTerms());
-	}
-	
 	public void deleteSearch(Search s)
 	{
 		if(profile.contains(s))

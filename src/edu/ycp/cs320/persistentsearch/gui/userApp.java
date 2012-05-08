@@ -43,8 +43,6 @@ public class userApp extends JFrame {
 		
 		// creates all the views and sets them in the view
 		defaultUserView defaultView = new defaultUserView();
-		defaultView.setModel(userModel); 
-		//defaultView.setModel(userModel);
 
 		final ResultCollection resultCollection = new ResultCollection();
 		

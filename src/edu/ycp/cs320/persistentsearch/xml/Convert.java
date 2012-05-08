@@ -1,11 +1,9 @@
 package edu.ycp.cs320.persistentsearch.xml;
 
-import java.io.FileWriter;
 import java.io.StringWriter;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
@@ -16,7 +14,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
 
 import edu.ycp.cs320.persistentsearch.model.Bing;
 import edu.ycp.cs320.persistentsearch.model.Bloomberg;
@@ -24,10 +21,8 @@ import edu.ycp.cs320.persistentsearch.model.ESPN;
 import edu.ycp.cs320.persistentsearch.model.NewYorkTimes;
 import edu.ycp.cs320.persistentsearch.model.ResultCollection;
 import edu.ycp.cs320.persistentsearch.model.Search;
-import edu.ycp.cs320.persistentsearch.model.SearchException;
 import edu.ycp.cs320.persistentsearch.model.SearchTerm;
 import edu.ycp.cs320.persistentsearch.model.Website;
-import edu.ycp.cs320.persistentsearch.server.Server;
 
 public class Convert {
 	/**
@@ -39,8 +34,6 @@ public class Convert {
 	 */
 	public static Element convertSearchToXML(Document doc, Search search) 
 	{
-
-		////////////////////////
 		//Creating the XML tree
 
 		//create the root element and add it to the document
@@ -88,6 +81,12 @@ public class Convert {
 		return criteriaElt;
 	}
 	
+	/**
+	 * Convert an element in an XML document into a {@link Search} object.
+	 * 
+	 * @param searchElt an element in an XML document containing the data of a Search
+	 * @return a Search
+	 */
 	public static Search convertSearchFromXML(Element searchElt)
 	{
 		Search search = new Search("");
@@ -178,6 +177,8 @@ public class Convert {
 		return resultCollection;
 	}
 	
+	//this main function tests the convert methods and we were able to see the DOM tree printed
+	//we also used this main function to switch from testing converting a search and a ResultCollection
 	public static void main(String[] args) throws Exception 
 	{
 		DocumentBuilderFactory fac = DocumentBuilderFactory.newInstance();
@@ -215,7 +216,7 @@ public class Convert {
         //print xml
         System.out.println("Here's the xml:\n\n" + xmlString);
         
-//        //test going from xml to result collection
+        //test going from xml to result collection
 //        ResultCollection resultCollectionFromXML = convertResultCollectionFromXML(root);
 //        System.out.println("Here is the result collection: ");
 //        System.out.println("The name is: " + resultCollectionFromXML.getName());

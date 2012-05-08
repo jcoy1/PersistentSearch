@@ -146,11 +146,6 @@ public class NewSearchView extends JPanel implements Observer {
 		this.newSearchCallback = newSearchCallback;
 	}
 	
-//	public void setNewResultCollectionCallback(NewResultCollectionCallback newResultCollectionCallback)
-//	{
-//		this.newResultCollectionCallback = newResultCollectionCallback;
-//	}
-	
 	protected void handleSave() throws SearchException, IOException, ParserConfigurationException, TransformerException
 	{
 		model = new Search(termsTextBox.getText());
@@ -183,7 +178,6 @@ public class NewSearchView extends JPanel implements Observer {
 		}
 		
 		//create file in search folder
-		
 		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
 		Document newDoc = dBuilder.newDocument();
@@ -201,16 +195,13 @@ public class NewSearchView extends JPanel implements Observer {
         trans.transform(source, result);
         String xmlString = sw.toString();
         
-		//***** File Writer will create the file
+		//File Writer will create the file
 		FileWriter writer = new FileWriter(Server.SEARCH_DIR + "/" + model.getContentHash() + ".search");
 		try {
 			writer.write(xmlString);
 		} finally {
 			writer.close();
 		}
-		
-		
-		/////////////////////////////////////////////////
 		
 		termsTextBox.setText("");
 		userApp.getInstance().switchView(userApp.RESULT_COLLECTION_NAME);
@@ -233,7 +224,6 @@ public class NewSearchView extends JPanel implements Observer {
 	@Override
 	public void update(Observable o, Object arg) 
 	{
-		// TODO Auto-generated method stub
 		
 	}
 }

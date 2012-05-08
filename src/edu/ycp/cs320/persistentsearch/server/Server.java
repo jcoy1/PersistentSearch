@@ -16,7 +16,6 @@ import javax.xml.transform.stream.StreamResult;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import edu.ycp.cs320.persistentsearch.model.*;
@@ -26,7 +25,7 @@ public class Server {
 	
 	public static final String SEARCH_DIR = System.getProperty("user.home") + File.separator + "search";
 	
-	private static final int INTERVAL_MS = /*60*5*1000*/ 30*1000; // wake up every 5 minutes
+	private static final int INTERVAL_MS = 30*1000; //wake up every 30 seconds, for 5 minutes use: 60*5*1000
 	
 	public static void main(String[] args) throws InterruptedException, SearchException, TransformerException 
 	{
@@ -41,10 +40,7 @@ public class Server {
 	}
 
 	private static void performSearches() throws IOException, SearchException, TransformerException 
-	{
-		//print statement so we know it went into this function
-		System.out.println("Performing search by server");
-		
+	{		
 		File searchDir = new File(SEARCH_DIR);
 		
 		DocumentBuilderFactory dbFactory;

@@ -9,29 +9,14 @@ import java.awt.Dimension;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JLabel;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-
-import org.w3c.dom.Document;
-import org.xml.sax.SAXException;
-
-import edu.ycp.cs320.persistentsearch.model.Search;
-import edu.ycp.cs320.persistentsearch.model.User;
-import edu.ycp.cs320.persistentsearch.server.Server;
-import edu.ycp.cs320.persistentsearch.xml.Convert;
 
 import java.awt.Font;
 import java.awt.Color;
-import java.io.File;
-import java.io.IOException;
-
 
 public class defaultUserView extends JPanel implements Observer {
 	
 	private static final long serialVersionUID = 1L;
 	
-	private User model;
 	private JButton addNewSearchButton;
 	private JButton listOfSearchButton;
 	
@@ -39,8 +24,6 @@ public class defaultUserView extends JPanel implements Observer {
 		setBackground(Color.BLUE);
 		setForeground(Color.BLACK);
 		setLayout(null);
-		
-		model = new User();
 		
 		addNewSearchButton = new JButton("Add New Search");
 		addNewSearchButton.setForeground(Color.BLUE);
@@ -98,17 +81,10 @@ public class defaultUserView extends JPanel implements Observer {
 	{
 		userApp.getInstance().switchView(userApp.LIST_OF_SEARCHES_NAME);
 	}
-	
-	public void setModel(User model) 
-	{
-		this.model = model;
-		
-		//register as an observer
-		model.addObserver(this);
-	}
 
 	@Override
 	public void update(Observable arg0, Object arg1) 
 	{
+		
 	}
 }

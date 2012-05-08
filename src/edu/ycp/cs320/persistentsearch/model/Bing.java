@@ -80,6 +80,7 @@ public class Bing implements Website {
 		return true;
 	}
 	
+	//tests to see the results printed to the console
 	public static void main(String[] args) {
 		String terms = "New+York+Giants";
 		String bingURL = "http://api.bing.net/xml.aspx?Appid=" + BING_API_KEY + "&query=" + terms + "&sources=web";
@@ -110,7 +111,6 @@ public class Bing implements Website {
 						}
 					}
 				}
-				
 			} finally {
 				in.close();
 			}

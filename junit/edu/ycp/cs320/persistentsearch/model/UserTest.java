@@ -8,7 +8,6 @@ public class UserTest{
 	private User user;
 	private Search search;
 	private Search search2;
-	private SearchTerm st;
 	
 	@Before
 	public void setUp()
@@ -16,7 +15,6 @@ public class UserTest{
 		user = new User();
 		search = new Search("Giants");
 		search2 = new Search("Mets");
-		st = new SearchTerm("Mets");
 	}
 	
 	@Test
@@ -27,14 +25,6 @@ public class UserTest{
 		assertEquals(1, user.getProfile().size());
 		
 		assertTrue(user.getProfile().contains(search));
-	}
-	
-	@Test
-	public void testEditSearch() throws Exception
-	{
-		user.editSearch(search, st);
-		
-		assertEquals("Mets", search.getCriteria().getTerms());
 	}
 	
 	@Test

@@ -54,6 +54,7 @@ public class Search extends Observable {
 		return results;
 	}
 	
+	//creates the name of the specified file from the terms and websites that are given
 	public String getContentHash() {
 		try {
 			MessageDigest md = MessageDigest.getInstance("SHA-256");
@@ -90,7 +91,6 @@ public class Search extends Observable {
 				&& this.sitesToVisit.equals(other.sitesToVisit);
 	}
 	
-	// TODO: toString() method
 	@Override
 	public String toString()
 	{
